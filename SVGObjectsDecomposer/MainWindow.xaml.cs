@@ -20,6 +20,8 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using WinRT.Interop;
+using Windows.ApplicationModel.DataTransfer;
+using System.Threading.Tasks;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -75,5 +77,48 @@ public sealed partial class MainWindow : Window
             OriginalSVGImage.Source = bitmapImage;
         }
 
+    }
+
+    private void CloseFileButton_Click(object sender, RoutedEventArgs e)
+    {
+        OriginalSVGImage.Source = null;
+    }
+
+    private void App_DragOver(object sender, DragEventArgs e)
+    {
+        //DragDropMessage.Text += "Here";
+
+        if (e.DataView.Contains(StandardDataFormats.StorageItems))
+        {
+            e.AcceptedOperation = DataPackageOperation.Copy;    
+
+        }
+    }
+
+    private async void App_Drop(object sender, DragEventArgs e)
+    {
+        var items = await e.DataView.GetStorageItemsAsync();
+
+        if (items.Count != 1)
+        {
+            ShowWarningAlart("Please give a single SVG file.");
+            return;
+        }
+
+        if (Path.GetExtension(items[0].Name) != ".svg")
+        {
+            ShowWarningAlart("Please confirm your file extension is .svg.");
+            return;
+        }
+    }
+
+    async void ShowWarningAlart(string message)
+    {
+        var originalMessage = DragDropMessage.Text;
+        DragDropMessage.Text = message;
+
+        await Task.Delay(2000);
+
+        DragDropMessage.Text = originalMessage;
     }
 }

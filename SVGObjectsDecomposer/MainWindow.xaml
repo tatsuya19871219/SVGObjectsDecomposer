@@ -24,11 +24,23 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="Drop a SVG file here."/>
+                <Grid BorderBrush="Black" BorderThickness="2"
+                      Background="LightBlue"
+                      AllowDrop="True"
+                      DragOver="App_DragOver"
+                      Drop="App_Drop"
+                      Margin="40"
+                      Grid.Column="0">
 
-                <Image x:Name="OriginalSVGImage" 
-                       AllowDrop="True"/>
+                    <TextBlock x:Name="DragDropMessage" 
+                           Text="Drop a SVG file here."
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
 
+                    <Image x:Name="OriginalSVGImage"/>
+
+                </Grid>
+                
             </Grid>
             
         </Grid>
@@ -50,7 +62,7 @@
                 <Button Content="Open a SVG file" Click="OpenFileButton_Click"/>
                 <Button Content="Trim parts"/>
                 <Button Content="Save SVG parts"/>
-                <Button Content="Close the SVG file"/>
+                <Button Content="Close the SVG file" Click="CloseFileButton_Click"/>
             </StackPanel>
         </Grid>
         
