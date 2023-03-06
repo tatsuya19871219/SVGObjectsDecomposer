@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SVGObjectsDecomposer (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "SVGObjectsDecomposer (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
