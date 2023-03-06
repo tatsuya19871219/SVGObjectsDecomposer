@@ -11,6 +11,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -25,6 +26,20 @@ namespace SVGObjectsDecomposer
         public MainPage()
         {
             this.InitializeComponent();
+        }
+
+        private async void OpenFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            var svgPicker = new Windows.Storage.Pickers.FileOpenPicker();
+            //svgPicker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
+            svgPicker.FileTypeFilter.Add(".svg");
+
+            Windows.Storage.StorageFile file = await svgPicker.PickSingleFileAsync();
+
+            if (file != null) 
+            {
+                OriginalSVGImage.Source = new SvgImageSource(new Uri(file.Path));
+            }
         }
     }
 }

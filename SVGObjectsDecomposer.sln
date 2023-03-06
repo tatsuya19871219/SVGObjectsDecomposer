@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SVGObjectsDecomposer", "SVGObjectsDecomposer\SVGObjectsDecomposer.csproj", "{35E98373-E024-436C-9B72-D1D74FCE8CD2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SVGObjectsDecomposerUWP", "SVGObjectsDecomposer\SVGObjectsDecomposerUWP.csproj", "{35E98373-E024-436C-9B72-D1D74FCE8CD2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
