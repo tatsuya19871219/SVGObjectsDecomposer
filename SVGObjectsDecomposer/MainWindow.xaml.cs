@@ -22,6 +22,8 @@ using Windows.Foundation.Collections;
 using WinRT.Interop;
 using Windows.ApplicationModel.DataTransfer;
 using System.Threading.Tasks;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -33,9 +35,56 @@ namespace SVGObjectsDecomposer;
 /// </summary>
 public sealed partial class MainWindow : Window
 {
+    public AppStateViewModel AppState {get; set;} = new();
+
+    //bool _isInWork = false;
+
     public MainWindow()
     {
         this.InitializeComponent();
+        //AppState.Initialized();
+    }
+
+    void EvokeSVGDecomposerTask(Windows.Storage.StorageFile file)
+    {
+        //_isInWork = true;
+
+
+        //DragDropMessage.Visibility = Visibility.Collapsed;
+
+        var svgdoc = OpenSVGFile(file);
+
+        AppState.SVGLoaded();
+
+
+    }
+
+    SvgDocument OpenSVGFile(Windows.Storage.StorageFile file)
+    {
+        if (file is null) throw new ArgumentNullException("Given file is null");
+
+        //var filename = file.Name;
+
+        var svgdoc = SvgDocument.Open(file.Path);
+
+        Bitmap bitmap = svgdoc.Draw();
+
+        //var hbitmap = bitmap.GetHbitmap();
+
+        BitmapImage bitmapImage = new BitmapImage();
+
+        // https://stackoverflow.com/questions/72544135/how-to-display-bitmap-object-in-winui-3-application
+        using (MemoryStream ms = new MemoryStream())
+        {
+            bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+            ms.Position = 0;
+            bitmapImage.SetSource(ms.AsRandomAccessStream());
+        }
+
+        // Set to the Image View
+        OriginalSVGImage.Source = bitmapImage;
+
+        return svgdoc;
     }
 
     private async void OpenFileButton_Click(object sender, RoutedEventArgs e)
@@ -53,35 +102,20 @@ public sealed partial class MainWindow : Window
 
         Windows.Storage.StorageFile file = await svgPicker.PickSingleFileAsync();
 
-        if (file is not null ) 
-        {
-            var filename = file.Name;
+        if (file is null) return;
 
-            var svgdoc = SvgDocument.Open(file.Path);
-
-            Bitmap bitmap = svgdoc.Draw();
-
-            //var hbitmap = bitmap.GetHbitmap();
-
-            BitmapImage bitmapImage = new BitmapImage();
-
-            // https://stackoverflow.com/questions/72544135/how-to-display-bitmap-object-in-winui-3-application
-            using (MemoryStream ms = new MemoryStream())
-            {
-                bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                ms.Position = 0;
-                bitmapImage.SetSource(ms.AsRandomAccessStream());
-            }
-
-            //
-            OriginalSVGImage.Source = bitmapImage;
-        }
-
+        EvokeSVGDecomposerTask(file);
     }
 
     private void CloseFileButton_Click(object sender, RoutedEventArgs e)
     {
         OriginalSVGImage.Source = null;
+
+        AppState.Initialized();
+
+        //DragDropMessage.Visibility = Visibility.Visible;
+
+        //_isInWork = false;
     }
 
     private void App_DragOver(object sender, DragEventArgs e)
@@ -110,6 +144,12 @@ public sealed partial class MainWindow : Window
             ShowWarningAlart("Please confirm your file extension is .svg.");
             return;
         }
+
+        //var filepath = Path.GetFileName(items[0].Path);
+
+        var file = items[0] as Windows.Storage.StorageFile;
+
+        EvokeSVGDecomposerTask(file);
     }
 
     async void ShowWarningAlart(string message)
