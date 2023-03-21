@@ -37,8 +37,6 @@ public sealed partial class MainWindow : Window
 {
     public AppStateViewModel AppState {get; set;} = new();
 
-    //bool _isInWork = false;
-
     public MainWindow()
     {
         this.InitializeComponent();
@@ -47,16 +45,35 @@ public sealed partial class MainWindow : Window
 
     void EvokeSVGDecomposerTask(Windows.Storage.StorageFile file)
     {
-        //_isInWork = true;
-
-
-        //DragDropMessage.Visibility = Visibility.Collapsed;
 
         var svgdoc = OpenSVGFile(file);
 
+        OriginalSVGImage.Source = ConvertToBitmapImage(svgdoc);
+
         AppState.SVGLoaded();
 
+        var svgContainer = new SVGContainer(svgdoc);
 
+        // test
+        // for (int i = 0; i < 5; i++)
+        // {
+        //     DecomposedImages.Items.Add(ConvertToBitmapImage(svgdoc));
+        // }
+
+        // foreach(var svgObject in svgContainer.SVGObjects)
+        // {
+        //     //DecomposedImages.Items.Add(ConvertToBitmapImage(svgObject.Image));
+        //     DecomposedImages.Items.Add(svgObject.Image);
+        // }
+
+        var result = 
+            from obj in svgContainer.SVGObjects
+            group obj by obj.LayerID into g
+            orderby g.Key
+            select g;
+
+        //DecomposedImages.ItemsSource = result;
+        GroupedSVGObjects.Source = result;
     }
 
     SvgDocument OpenSVGFile(Windows.Storage.StorageFile file)
@@ -66,6 +83,29 @@ public sealed partial class MainWindow : Window
         //var filename = file.Name;
 
         var svgdoc = SvgDocument.Open(file.Path);
+
+        //Bitmap bitmap = svgdoc.Draw();
+
+        ////var hbitmap = bitmap.GetHbitmap();
+
+        //BitmapImage bitmapImage = new BitmapImage();
+
+        //// https://stackoverflow.com/questions/72544135/how-to-display-bitmap-object-in-winui-3-application
+        //using (MemoryStream ms = new MemoryStream())
+        //{
+        //    bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+        //    ms.Position = 0;
+        //    bitmapImage.SetSource(ms.AsRandomAccessStream());
+        //}
+
+        //// Set to the Image View
+        //OriginalSVGImage.Source = bitmapImage;
+
+        return svgdoc;
+    }
+
+    internal static BitmapImage ConvertToBitmapImage(SvgDocument svgdoc)
+    {
 
         Bitmap bitmap = svgdoc.Draw();
 
@@ -82,9 +122,8 @@ public sealed partial class MainWindow : Window
         }
 
         // Set to the Image View
-        OriginalSVGImage.Source = bitmapImage;
-
-        return svgdoc;
+        //OriginalSVGImage.Source =
+        return bitmapImage;
     }
 
     private async void OpenFileButton_Click(object sender, RoutedEventArgs e)
@@ -112,10 +151,6 @@ public sealed partial class MainWindow : Window
         OriginalSVGImage.Source = null;
 
         AppState.Initialized();
-
-        //DragDropMessage.Visibility = Visibility.Visible;
-
-        //_isInWork = false;
     }
 
     private void App_DragOver(object sender, DragEventArgs e)

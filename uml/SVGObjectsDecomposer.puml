@@ -1,0 +1,97 @@
+@startuml SVGObjectsDecomposer
+
+class MainWindow
+{
+    + AppState : AppStateViewModel
+    + MainWindow()
+    - EvokeSVGDecomposerTask(file : StorageFile) : void
+    - OpenSVGFile(file : StorageFile) : SvgDocument
+}
+
+class AppStateViewModel
+{
+    + IsInitialized : bool <<observable property>>
+    + IsSVGLoaded : bool <<observable property>>
+    + IsEditable : bool <<observable property>>
+    + CanUseInkscape : bool <<observable property>>
+    + AppStateViewModel()
+    + SVGLoaded() : void
+    + Initialized() : void
+    + Editable() : void
+    + InkscapeAvailable() : void
+}
+
+class EditableSVGContainer
+{
+    - svgContainer : SVGContainer <<read only>>
+    - editableSVGObjects : List<EditableSVGObject> <<read only>>
+    + Resize(width : double, height : double) : void
+    '+ TrimAll() : void
+    + SaveAll() : void
+    + GenerateXAMLSample() : void
+}
+
+class SVGContainer
+{
+    + LayerCounts : int <<read only>>
+    + LayerNames : List<string> <<read only>>
+    + SVGObjects : List<SVGObject> <<read only>>
+    - document : SvgDocument <<read only>>
+    - templeteDocument : SVGDocumentTemplete <<read only>>
+    - firstLayers : List<SvgGroup> <<read only>>
+    ~ SVGContainer(document : SvgDocument)
+
+}
+
+class SVGDocumentTemplete
+{
+    - templete : SvgDocument
+    - SVGDocumentTemplete(document : SvgDocument)
+    {static} ~ Extract(document : SvgDocument, layers : out List<SvgGroup>) : SVGDocumentTemplete
+    - ExtractLayers(layers : out List<SvgGroup>) : void
+    ~ CreateNewDocument() : SvgDocument
+}
+
+class SVGLayerTemplete
+{
+    - templete : SvgGroup
+    - SVGLayerTemplete(group : SvgGroup)
+    {static} ~ Extract(group : SvgGroup, elements : out List<SvgElement>) : SVGLayerTemplete
+    - ExtractElements(elements : out List<SvgElement>) : void
+    ~ CreateNewLayer() : SvgGroup
+}
+
+class SVGObject
+{
+    - objectDocument : SvgDocument
+}
+
+' class TrimmedSVGObject
+' {
+
+' }
+
+class EditableSVGObject
+{
+    - original : SVGObject
+    '- trimmed : SVGObject
+    + IsTrimmed : bool
+    + Trim() : void
+}
+
+' arrows
+MainWindow -left-> AppStateViewModel
+MainWindow --> EditableSVGContainer
+
+EditableSVGObject --> SVGObject
+EditableSVGContainer --> SVGContainer
+SVGContainer --> SVGDocumentTemplete
+SVGContainer --> SVGLayerTemplete
+
+SVGContainer *- SVGObject
+EditableSVGContainer *- EditableSVGObject
+
+EditableSVGContainer -up-|> ObservableObject
+EditableSVGObject -up-|> ObservableObject
+
+@enduml

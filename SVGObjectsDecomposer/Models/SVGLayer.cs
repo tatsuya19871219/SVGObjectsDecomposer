@@ -1,0 +1,6 @@
+namespace SVGObjectsDecomposer;
+
+class SVGLayer
+{
+    
+}

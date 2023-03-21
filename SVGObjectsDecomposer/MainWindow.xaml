@@ -8,6 +8,7 @@
     xmlns:local="using:SVGObjectsDecomposer"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:svg="using:Svg"
     mc:Ignorable="d">
 
     <Grid>
@@ -46,6 +47,53 @@
                     -->
                     <!--<ToggleSwitch IsOn="{x:Bind Path=AppState.IsSVGLoaded, Mode=OneWay}"/>-->
 
+                </Grid>
+                
+
+                <Grid Grid.Column="1">
+                    
+                    <Grid.Resources>
+                        <CollectionViewSource x:Name="GroupedSVGObjects" IsSourceGrouped="True"/>
+                    </Grid.Resources>
+                    
+
+                    <GridView x:Name="DecomposedImages"
+                              BorderThickness="1"
+                              BorderBrush="Black"
+                              ItemsSource="{Binding Source={StaticResource GroupedSVGObjects}}"
+                              Margin="30">
+
+                        <GridView.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+
+                                        <TextBlock Text="{Binding Key}"/>
+
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </GridView.GroupStyle>
+
+                        <GridView.ItemTemplate>
+                            
+                            <DataTemplate x:DataType="local:SVGObject">
+                                <Grid Height="150">
+                                    <!--<Image Source="{x:Bind local:MainWindow.ConvertToBitmapImage((svg:SvgDocument))}"/>-->
+                                    <Image Source="{x:Bind local:MainWindow.ConvertToBitmapImage(Image)}"/>
+                                    <!--<TextBlock Text="{x:Bind LayerID}"/>-->
+                                </Grid>
+                            </DataTemplate>
+
+                            <!-- <DataTemplate x:DataType="ImageSource">
+                                <Grid Height="150">
+                                    <Image Source="{x:Bind}"/>
+                                </Grid>
+                            </DataTemplate> -->
+                            
+                        </GridView.ItemTemplate>
+                    </GridView>
+                    
                 </Grid>
                 
             </Grid>
