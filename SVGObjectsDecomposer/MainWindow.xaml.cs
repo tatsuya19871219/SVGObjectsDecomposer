@@ -196,4 +196,11 @@ public sealed partial class MainWindow : Window
 
         DragDropMessage.Text = originalMessage;
     }
+
+    private void DecomposedImages_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var selectedSVGObject = e.AddedItems[0] as SVGObject;
+
+        SelectedSVGObject.Source = ConvertToBitmapImage(selectedSVGObject.Image);
+    }
 }

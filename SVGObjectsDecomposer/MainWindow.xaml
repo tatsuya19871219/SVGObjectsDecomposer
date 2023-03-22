@@ -9,6 +9,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:svg="using:Svg"
+    xmlns:brushes="using:CommunityToolkit.WinUI.UI.Media"
     mc:Ignorable="d">
 
     <Grid>
@@ -25,30 +26,44 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Grid BorderBrush="Black" BorderThickness="2"
-                      Background="LightBlue"
-                      AllowDrop="True"
-                      DragOver="App_DragOver"
-                      Drop="App_Drop"
-                      Margin="40"
-                      Grid.Column="0">
+                <StackPanel Orientation="Vertical"
+                            Grid.Column="0">
 
-                    <TextBlock x:Name="DragDropMessage" 
-                           Text="Drop a SVG file here."
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Visibility="{x:Bind AppState.IsInitialized, Mode=OneWay}"/>
+                    <Grid BorderBrush="Black" BorderThickness="2"
+                          AllowDrop="True"
+                          DragOver="App_DragOver"
+                          Drop="App_Drop"
+                          Margin="40"
+                          Height="350">
 
-                    <Image x:Name="OriginalSVGImage"/>
+                        <Grid.Background>
+                            <brushes:TilesBrush TextureUri="/Assets/TileBase.png"/>
+                        </Grid.Background>
 
-                    <!--
-                    x:Bind default mode is one time
-                        https://stackoverflow.com/questions/72034501/binding-not-updating-winui-3
-                    -->
-                    <!--<ToggleSwitch IsOn="{x:Bind Path=AppState.IsSVGLoaded, Mode=OneWay}"/>-->
+                        <TextBlock x:Name="DragDropMessage" 
+                               Text="Drop a SVG file here."
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Visibility="{x:Bind AppState.IsInitialized, Mode=OneWay}"/>
 
-                </Grid>
-                
+                        <Image x:Name="OriginalSVGImage" Opacity="0.5"/>
+
+                        <Image x:Name="SelectedSVGObject"/>
+
+                        <!--
+                        x:Bind default mode is one time
+                            https://stackoverflow.com/questions/72034501/binding-not-updating-winui-3
+                        -->
+                        <!--<ToggleSwitch IsOn="{x:Bind Path=AppState.IsSVGLoaded, Mode=OneWay}"/>-->
+
+                    </Grid>
+
+                    <Viewbox x:Name="SVGImageInfo" 
+                             Height="100">
+                        <TextBlock Text="AAAAAAAAA"/>
+                    </Viewbox>
+
+                </StackPanel>
 
                 <Grid Grid.Column="1">
                     
@@ -61,7 +76,8 @@
                               BorderThickness="1"
                               BorderBrush="Black"
                               ItemsSource="{Binding Source={StaticResource GroupedSVGObjects}}"
-                              Margin="30">
+                              Margin="30"
+                              SelectionChanged="DecomposedImages_SelectionChanged">
 
                         <GridView.GroupStyle>
                             <GroupStyle>
@@ -79,9 +95,18 @@
                             
                             <DataTemplate x:DataType="local:SVGObject">
                                 <Grid Height="150">
+
+                                    <Grid.Background>
+                                        <brushes:TilesBrush TextureUri="/Assets/TileBase.png"/>
+                                    </Grid.Background>
+
                                     <!--<Image Source="{x:Bind local:MainWindow.ConvertToBitmapImage((svg:SvgDocument))}"/>-->
                                     <Image Source="{x:Bind local:MainWindow.ConvertToBitmapImage(Image)}"/>
-                                    <!--<TextBlock Text="{x:Bind LayerID}"/>-->
+                                    <TextBlock Text="{x:Bind LayerID}"/>
+                                    <ToggleButton Content="Trim" 
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Top"/>
+
                                 </Grid>
                             </DataTemplate>
 
@@ -115,7 +140,7 @@
                 </StackPanel.Resources>
                 
                 <Button Content="Open a SVG file" Click="OpenFileButton_Click"/>
-                <Button Content="Trim parts"/>
+                <!--<Button Content="Trim parts"/>-->
                 <Button Content="Save SVG parts"/>
                 <Button Content="Close the SVG file" Click="CloseFileButton_Click"/>
             </StackPanel>
