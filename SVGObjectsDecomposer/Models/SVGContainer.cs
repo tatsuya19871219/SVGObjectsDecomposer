@@ -1,14 +1,21 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Svg;
+using SVGObjectsDecomposer.Models;
 
 namespace SVGObjectsDecomposer;
 
 class SVGContainer
 {
+    readonly public string Filename;
     readonly public int LayerCounts;
     readonly public List<string> LayerNames;
-    readonly public List<SVGObject> SVGObjects; // memo : Select( obj => obj.Layer == 1)
 
+    readonly public List<SVGLayer> SVGLayers;
+    readonly public List<SVGObject> SVGObjects;
+
+    readonly Uri _baseUri;
     readonly SvgDocument _document;
 
     readonly SVGDocumentTemplete _templeteDocument;
@@ -28,6 +35,10 @@ class SVGContainer
     internal SVGContainer(SvgDocument document)
     {
         _document = document;
+
+        _baseUri = document.BaseUri;
+        //Filename = _baseUri.Segments.Last();
+        Filename = _baseUri.Segments[^1];
 
         _templeteDocument = SVGDocumentTemplete.Extract(document, out _firstLayers);
 

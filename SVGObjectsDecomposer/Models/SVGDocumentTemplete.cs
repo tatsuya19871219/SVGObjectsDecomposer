@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Svg;
 
-namespace SVGObjectsDecomposer;
+namespace SVGObjectsDecomposer.Models;
 
 public class SVGDocumentTemplete
 {

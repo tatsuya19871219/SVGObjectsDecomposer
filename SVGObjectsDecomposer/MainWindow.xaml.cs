@@ -25,6 +25,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Helper = SVGObjectsDecomposer.ValueConverterHelper;
+using SVGObjectsDecomposer.Models;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -37,6 +38,12 @@ namespace SVGObjectsDecomposer;
 public sealed partial class MainWindow : Window
 {
     public AppStateViewModel AppState {get; set;} = new();
+
+    public DecomposeEditorViewModel DecomposeEditor { get; set; } = new();
+
+    //public EditableSVGContainer EditingSVGContainer {get; set;}
+
+    //private SVGContainer _currentSVGContainer;
 
     public MainWindow()
     {
@@ -53,7 +60,14 @@ public sealed partial class MainWindow : Window
 
         AppState.SVGLoaded();
 
-        var svgContainer = new SVGContainer(svgdoc);
+        //var svgContainer = new SVGContainer(svgdoc);
+
+        DecomposeEditor.SetNewDocument(svgdoc);
+
+        //_currentSVGContainer = svgContainer;
+        //EditingSVGContainer = new(svgContainer);
+
+        //CurrentSVGFilename.Text = svgContainer.Filename;
 
         // test
         // for (int i = 0; i < 5; i++)
@@ -67,42 +81,21 @@ public sealed partial class MainWindow : Window
         //     DecomposedImages.Items.Add(svgObject.Image);
         // }
 
-        var result = 
-            from obj in svgContainer.SVGObjects
-            group obj by obj.LayerID into g
-            orderby g.Key
-            select g;
+        // var result = 
+        //     from obj in svgContainer.SVGObjects
+        //     group obj by obj.LayerID into g
+        //     orderby g.Key
+        //     select g;
 
-        //DecomposedImages.ItemsSource = result;
-        GroupedSVGObjects.Source = result;
+        // //DecomposedImages.ItemsSource = result;
+        // GroupedSVGObjects.Source = result;
     }
 
     SvgDocument OpenSVGFile(Windows.Storage.StorageFile file)
     {
         if (file is null) throw new ArgumentNullException("Given file is null");
 
-        //var filename = file.Name;
-
-        var svgdoc = SvgDocument.Open(file.Path);
-
-        //Bitmap bitmap = svgdoc.Draw();
-
-        ////var hbitmap = bitmap.GetHbitmap();
-
-        //BitmapImage bitmapImage = new BitmapImage();
-
-        //// https://stackoverflow.com/questions/72544135/how-to-display-bitmap-object-in-winui-3-application
-        //using (MemoryStream ms = new MemoryStream())
-        //{
-        //    bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-        //    ms.Position = 0;
-        //    bitmapImage.SetSource(ms.AsRandomAccessStream());
-        //}
-
-        //// Set to the Image View
-        //OriginalSVGImage.Source = bitmapImage;
-
-        return svgdoc;
+        return SvgDocument.Open(file.Path);
     }
 
 
@@ -130,7 +123,14 @@ public sealed partial class MainWindow : Window
     {
         OriginalSVGImage.Source = null;
 
+        DecomposeEditor.ReleaseDocument();
+
         AppState.Initialized();
+    }
+
+    private void SaveButton_Click(object sender, RoutedEventArgs e)
+    {
+        //
     }
 
     private void App_DragOver(object sender, DragEventArgs e)
@@ -179,9 +179,17 @@ public sealed partial class MainWindow : Window
 
     private void DecomposedImages_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
+        if (e.AddedItems.Count == 0)
+        {
+            //SelectedSVGObject.Source = null;
+            DecomposeEditor.SelectedSVGObject = null;
+            return;
+        }
+
         var selectedSVGObject = e.AddedItems[0] as SVGObject;
 
-        SelectedSVGObject.Source = Helper.ConvertToBitmapImage(selectedSVGObject.Image);
+        //SelectedSVGObject.Source = Helper.ConvertToBitmapImage(selectedSVGObject.Image);
+        DecomposeEditor.SelectedSVGObject = selectedSVGObject;
     }
 
     

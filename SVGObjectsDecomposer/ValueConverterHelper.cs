@@ -18,6 +18,8 @@ static class ValueConverterHelper
     // converter helper
     internal static BitmapImage ConvertToBitmapImage(SvgDocument svgdoc)
     {
+        if (svgdoc is null) return null;
+
         Bitmap bitmap = svgdoc.Draw();
 
         BitmapImage bitmapImage = new BitmapImage();

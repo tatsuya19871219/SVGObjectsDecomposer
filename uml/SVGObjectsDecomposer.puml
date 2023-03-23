@@ -21,6 +21,15 @@ class AppStateViewModel
     + InkscapeAvailable() : void
 }
 
+class DecomposeEditorViewModel
+{
+    - document : SvgDocument
+    + DecomposeEditorViewModel()
+    + SetNewDocument(document : SvgDocument)
+    + ReleaseDocument()
+    + Save()
+}
+
 class EditableSVGContainer
 {
     - svgContainer : SVGContainer <<read only>>
@@ -62,15 +71,21 @@ class SVGLayerTemplete
     ~ CreateNewLayer() : SvgGroup
 }
 
+class SVGLayer
+{
+    - name : string
+}
+
+class EditableSVGLayer
+{
+
+}
+
 class SVGObject
 {
     - objectDocument : SvgDocument
 }
 
-' class TrimmedSVGObject
-' {
-
-' }
 
 class EditableSVGObject
 {
@@ -81,19 +96,28 @@ class EditableSVGObject
     + Trim() : void
 }
 
+
 ' arrows
 MainWindow -left-> AppStateViewModel
-MainWindow --> EditableSVGContainer
+'MainWindow --> EditableSVGContainer
+MainWindow --> DecomposeEditorViewModel
 
 EditableSVGObject --> SVGObject
+EditableSVGLayer --> SVGLayer
 EditableSVGContainer --> SVGContainer
+
 SVGContainer --> SVGDocumentTemplete
 SVGContainer --> SVGLayerTemplete
 
 SVGContainer *- SVGObject
 EditableSVGContainer *- EditableSVGObject
 
-EditableSVGContainer -up-|> ObservableObject
-EditableSVGObject -up-|> ObservableObject
+SVGContainer *- SVGLayer
+EditableSVGContainer *- EditableSVGLayer
+
+'EditableSVGContainer -up-|> ObservableObject
+'EditableSVGObject -up-|> ObservableObject
+
+DecomposeEditorViewModel --> EditableSVGContainer
 
 @enduml

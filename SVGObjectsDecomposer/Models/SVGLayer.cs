@@ -1,4 +1,4 @@
-namespace SVGObjectsDecomposer;
+namespace SVGObjectsDecomposer.Models;
 
 class SVGLayer
 {
