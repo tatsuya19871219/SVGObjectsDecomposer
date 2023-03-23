@@ -100,8 +100,7 @@
                                         <brushes:TilesBrush TextureUri="/Assets/TileBase.png"/>
                                     </Grid.Background>
 
-                                    <!--<Image Source="{x:Bind local:MainWindow.ConvertToBitmapImage((svg:SvgDocument))}"/>-->
-                                    <Image Source="{x:Bind local:MainWindow.ConvertToBitmapImage(Image)}"/>
+                                    <Image Source="{x:Bind local:ValueConverterHelper.ConvertToBitmapImage(Image)}"/>
                                     <TextBlock Text="{x:Bind LayerID}"/>
                                     <ToggleButton Content="Trim" 
                                                     HorizontalAlignment="Right"

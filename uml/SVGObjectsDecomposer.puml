@@ -25,6 +25,7 @@ class EditableSVGContainer
 {
     - svgContainer : SVGContainer <<read only>>
     - editableSVGObjects : List<EditableSVGObject> <<read only>>
+    + EditableSVGContainer(svgContainer : SVGContainer)
     + Resize(width : double, height : double) : void
     '+ TrimAll() : void
     + SaveAll() : void
@@ -75,6 +76,7 @@ class EditableSVGObject
 {
     - original : SVGObject
     '- trimmed : SVGObject
+    + EditableSVGObject(svgObject : SVGObject)
     + IsTrimmed : bool
     + Trim() : void
 }

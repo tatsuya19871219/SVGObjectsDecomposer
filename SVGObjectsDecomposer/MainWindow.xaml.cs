@@ -24,6 +24,7 @@ using Windows.ApplicationModel.DataTransfer;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Helper = SVGObjectsDecomposer.ValueConverterHelper;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -48,7 +49,7 @@ public sealed partial class MainWindow : Window
 
         var svgdoc = OpenSVGFile(file);
 
-        OriginalSVGImage.Source = ConvertToBitmapImage(svgdoc);
+        OriginalSVGImage.Source = Helper.ConvertToBitmapImage(svgdoc);
 
         AppState.SVGLoaded();
 
@@ -104,27 +105,6 @@ public sealed partial class MainWindow : Window
         return svgdoc;
     }
 
-    internal static BitmapImage ConvertToBitmapImage(SvgDocument svgdoc)
-    {
-
-        Bitmap bitmap = svgdoc.Draw();
-
-        //var hbitmap = bitmap.GetHbitmap();
-
-        BitmapImage bitmapImage = new BitmapImage();
-
-        // https://stackoverflow.com/questions/72544135/how-to-display-bitmap-object-in-winui-3-application
-        using (MemoryStream ms = new MemoryStream())
-        {
-            bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-            ms.Position = 0;
-            bitmapImage.SetSource(ms.AsRandomAccessStream());
-        }
-
-        // Set to the Image View
-        //OriginalSVGImage.Source =
-        return bitmapImage;
-    }
 
     private async void OpenFileButton_Click(object sender, RoutedEventArgs e)
     {
@@ -201,6 +181,8 @@ public sealed partial class MainWindow : Window
     {
         var selectedSVGObject = e.AddedItems[0] as SVGObject;
 
-        SelectedSVGObject.Source = ConvertToBitmapImage(selectedSVGObject.Image);
+        SelectedSVGObject.Source = Helper.ConvertToBitmapImage(selectedSVGObject.Image);
     }
+
+    
 }
