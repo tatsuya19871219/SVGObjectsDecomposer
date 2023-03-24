@@ -56,13 +56,13 @@ public sealed partial class MainWindow : Window
 
         var svgdoc = OpenSVGFile(file);
 
-        OriginalSVGImage.Source = Helper.ConvertToBitmapImage(svgdoc);
+        //OriginalSVGImage.Source = Helper.ConvertToBitmapImage(svgdoc);
+        DecomposeEditor.SetNewDocument(svgdoc);
 
         AppState.SVGLoaded();
 
         //var svgContainer = new SVGContainer(svgdoc);
 
-        DecomposeEditor.SetNewDocument(svgdoc);
 
         //_currentSVGContainer = svgContainer;
         //EditingSVGContainer = new(svgContainer);
@@ -121,7 +121,7 @@ public sealed partial class MainWindow : Window
 
     private void CloseFileButton_Click(object sender, RoutedEventArgs e)
     {
-        OriginalSVGImage.Source = null;
+        //OriginalSVGImage.Source = null;
 
         DecomposeEditor.ReleaseDocument();
 

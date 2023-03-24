@@ -13,7 +13,9 @@ public partial class DecomposeEditorViewModel : ObservableObject
 {
     //public string Message = "Hey";
 
-    SvgDocument _currentDocument;
+    //SvgDocument _currentDocument;
+
+    [ObservableProperty] SvgDocument currentDocument;
 
     //public EditableSVGContainer EditingSVGContainer {get; set;}
     [ObservableProperty] EditableSVGContainer editingSVGContainer;
@@ -25,7 +27,7 @@ public partial class DecomposeEditorViewModel : ObservableObject
 
     internal void SetNewDocument(SvgDocument document)
     {
-        _currentDocument = document;
+        CurrentDocument = document;
 
         var svgContainer = new SVGContainer(document);
 
@@ -42,16 +44,16 @@ public partial class DecomposeEditorViewModel : ObservableObject
 
     internal void ReleaseDocument()
     {
-        _currentDocument = null;
+        CurrentDocument = null;
         EditingSVGContainer.Dispose();
         //EditingSVGContainer = null;
         Grouped = null;
     }
 
-    internal void SelectSVGObject(SVGObject svgObject)
-    {
-        SelectedSVGObject = svgObject;
-    }
+    // internal void SelectSVGObject(SVGObject svgObject)
+    // {
+    //     SelectedSVGObject = svgObject;
+    // }
 
     internal void Save() => EditingSVGContainer.SaveAll();
 }
