@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Xml.Linq;
 
 namespace SVGObjectsDecomposer.Models;
 
@@ -17,6 +18,7 @@ public class SVGObject
 
     public SvgDocument SvgDoc {get; init;}
     public string LayerID {get; init;}
+    public string ElementName {get; init;}
 
     public SVGObject(SVGDocumentTemplete docTemplete, SVGLayerTemplete layerTemplete, SvgElement element)
     {
@@ -29,10 +31,38 @@ public class SVGObject
         SvgDoc = document;        
 
         LayerID = layer.ID;
+
+        ElementName = element.ID;
+
+        // Overwrite ElementName if inkscape label is available
+        if ( TryGetInkscapeLabel(element, out var inkscapeLabel) )
+            ElementName = inkscapeLabel;
+
     }
 
-    // public void SetLayerName(string name) => SvgLayerName = name;
-    // public void SetPartsName(string name) => SvgPartsName = name;
+    bool TryGetInkscapeLabel(SvgElement element, out string name)
+    {
+        XNamespace nsInkscape = "http://www.inkscape.org/namespaces/inkscape";
+
+        var elementXML = element.GetXML();
+        var xmldoc = XDocument.Parse(elementXML);
+
+        var xelement = xmldoc.FirstNode as XElement;
+
+        var labelAttr = xelement.Attribute(nsInkscape + "label");
+
+        if (labelAttr is null) 
+        {
+            name = null;
+            return false;
+        }
+        else
+        {
+            name = labelAttr.Value;
+            return true;
+        }
+        
+    }
 
 
     // string formatter (for xaml)

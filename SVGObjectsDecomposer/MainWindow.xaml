@@ -15,149 +15,132 @@
     mc:Ignorable="d">
 
     <Grid>
-        <!-- <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions> -->
 
         <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Vertical"
+                        Grid.Column="0"
+                        DataContext="{x:Bind DecomposeEditor}">
 
-                <StackPanel Orientation="Vertical"
-                            Grid.Column="0"
-                            DataContext="{x:Bind DecomposeEditor}">
+                <Grid BorderBrush="Black" BorderThickness="2"
+                        AllowDrop="True"
+                        DragOver="App_DragOver"
+                        Drop="App_Drop"
+                        Margin="40"
+                        Height="350">
 
-                    <Grid BorderBrush="Black" BorderThickness="2"
-                          AllowDrop="True"
-                          DragOver="App_DragOver"
-                          Drop="App_Drop"
-                          Margin="40"
-                          Height="350">
+                    <Grid.Background>
+                        <brushes:TilesBrush TextureUri="/Assets/TileBase.png"/>
+                    </Grid.Background>
 
-                        <Grid.Background>
-                            <brushes:TilesBrush TextureUri="/Assets/TileBase.png"/>
-                        </Grid.Background>
+                    <TextBlock x:Name="DragDropMessage" 
+                            Text="Drop a SVG file here."
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Visibility="{x:Bind AppState.IsInitialized, Mode=OneWay}"/>
 
-                        <TextBlock x:Name="DragDropMessage" 
-                               Text="Drop a SVG file here."
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Visibility="{x:Bind AppState.IsInitialized, Mode=OneWay}"/>
 
-                        <!-- <Image x:Name="OriginalSVGImage" Opacity="0.5"/> -->
+                    <custom:SVGImageView Document="{Binding CurrentDocument}" Opacity="0.5"/>
 
-                        <custom:SVGImageView Document="{Binding CurrentDocument}" Opacity="0.5"/>
+                    <custom:SVGImageView Document="{Binding SelectedSVGObject.SvgDoc}"/>
 
-                        <custom:SVGImageView Document="{Binding SelectedSVGObject.SvgDoc}"/>
+                    <!--
+                    x:Bind default mode is one time
+                        https://stackoverflow.com/questions/72034501/binding-not-updating-winui-3
+                    -->
+                    <!--<ToggleSwitch IsOn="{x:Bind Path=AppState.IsSVGLoaded, Mode=OneWay}"/>-->
 
-                        <!--<Image x:Name="nnn"
-                                Source="{Binding SelectedSVGObject.SvgDoc, Converter={StaticResource local:ValueConverterHelper.ConvertToBitmapImage}}"/>-->
+                </Grid>
 
-                        <!--
-                        x:Bind default mode is one time
-                            https://stackoverflow.com/questions/72034501/binding-not-updating-winui-3
-                        -->
-                        <!--<ToggleSwitch IsOn="{x:Bind Path=AppState.IsSVGLoaded, Mode=OneWay}"/>-->
+                <Grid x:Name="CurrentSVGImageInfo" 
+                            Height="100"
+                            Margin="90, 30, 60, 30">
+                            <StackPanel Orientation="Vertical">
+                    <TextBlock x:Name="CurrentSVGFilename"
+                                Text="{x:Bind DecomposeEditor.EditingSVGContainer.Filename, Mode=TwoWay}"/>
+                                <TextBlock Text="Hey"/>
+                        </StackPanel>
+                </Grid>
 
-                    </Grid>
+                <StackPanel BorderBrush="Black" BorderThickness="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="30" Spacing="30">
 
-                    <Grid x:Name="CurrentSVGImageInfo" 
-                             Height="100"
-                             Margin="30">
-                             <StackPanel Orientation="Vertical">
-                        <TextBlock x:Name="CurrentSVGFilename"
-                                   Text="{x:Bind DecomposeEditor.EditingSVGContainer.Filename, Mode=TwoWay}"/>
-                                   <TextBlock Text="Hey"/>
-                            </StackPanel>
-                    </Grid>
-
-                    <StackPanel BorderBrush="Black" BorderThickness="1"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Center"
-                        Margin="30" Spacing="30">
-
-                        <StackPanel.Resources>
-                            <Style TargetType="Button">
-                                <Setter Property="FontSize" Value="24"/>
-                                <Setter Property="Margin" Value="20"/>
-                            </Style>
-                        </StackPanel.Resources>
-                        
-                        <Button Content="Open a SVG file" Click="OpenFileButton_Click"/>
-                        <!--<Button Content="Trim parts"/>-->
-                        <Button Content="Save SVG parts" Click="SaveButton_Click"/>
-                        <Button Content="Close the SVG file" Click="CloseFileButton_Click"/>
-                    </StackPanel>
-
+                    <StackPanel.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="FontSize" Value="16"/>
+                            <Setter Property="Margin" Value="10"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    
+                    <Button Content="Open a SVG file" Click="OpenFileButton_Click"/>
+                    <!--<Button Content="Trim parts"/>-->
+                    <Button Content="Save SVG parts" Click="SaveButton_Click"/>
+                    <Button Content="Close the SVG file" Click="CloseFileButton_Click"/>
                 </StackPanel>
 
-                <Grid Grid.Column="1" DataContext="{x:Bind DecomposeEditor}">
-                    
-                    <Grid.Resources>
-                        <CollectionViewSource x:Name="GroupedSVGObjects" IsSourceGrouped="True"
-                                                Source="{Binding Grouped, Mode=TwoWay}"/>
-                    </Grid.Resources>
-                    
+            </StackPanel>
 
-                    <GridView x:Name="DecomposedImages"
-                              BorderThickness="1"
-                              BorderBrush="Black"
-                              ItemsSource="{Binding Source={StaticResource GroupedSVGObjects}}"
-                              Margin="30"
-                              SelectionChanged="DecomposedImages_SelectionChanged">
+            <Grid Grid.Column="1" DataContext="{x:Bind DecomposeEditor}">
+                
+                <Grid.Resources>
+                    <CollectionViewSource x:Name="GroupedSVGObjects" IsSourceGrouped="True"
+                                            Source="{Binding Grouped, Mode=TwoWay}"/>
+                </Grid.Resources>
+                
 
-                        <GridView.GroupStyle>
-                            <GroupStyle>
-                                <GroupStyle.HeaderTemplate>
-                                    <DataTemplate>
+                <GridView x:Name="DecomposedImages"
+                            BorderThickness="1"
+                            BorderBrush="Black"
+                            ItemsSource="{Binding Source={StaticResource GroupedSVGObjects}}"
+                            Margin="30"
+                            SelectionChanged="DecomposedImages_SelectionChanged">
 
-                                        <TextBlock Text="{Binding Key}"/>
+                    <GridView.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
 
-                                    </DataTemplate>
-                                </GroupStyle.HeaderTemplate>
+                                    <TextBlock Text="{Binding Key}"/>
 
-                            </GroupStyle>
-                        </GridView.GroupStyle>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
 
-                        <GridView.ItemTemplate>
-                            
-                            <DataTemplate x:DataType="models:SVGObject">
-                                <Grid Height="150">
+                        </GroupStyle>
+                    </GridView.GroupStyle>
 
-                                    <Grid.Background>
-                                        <brushes:TilesBrush TextureUri="/Assets/TileBase.png"/>
-                                    </Grid.Background>
+                    <GridView.ItemTemplate>
+                        
+                        <DataTemplate x:DataType="models:SVGObject">
+                            <Grid Height="150">
 
-                                    <!-- <Image Source="{x:Bind local:ValueConverterHelper.ConvertToBitmapImage(SvgDoc)}"/> -->
-                                    <custom:SVGImageView Document="{Binding SvgDoc}"/>
+                                <Grid.Background>
+                                    <brushes:TilesBrush TextureUri="/Assets/TileBase.png"/>
+                                </Grid.Background>
 
-                                    <TextBlock Text="{x:Bind LayerID}"/>
-                                    <ToggleButton Content="Trim" 
-                                                    HorizontalAlignment="Right"
-                                                    VerticalAlignment="Top"/>
+                                <!-- <Image Source="{x:Bind local:ValueConverterHelper.ConvertToBitmapImage(SvgDoc)}"/> -->
+                                <custom:SVGImageView Document="{Binding SvgDoc}"/>
 
-                                </Grid>
-                            </DataTemplate>
+                                <TextBlock Text="{x:Bind ElementName}"/>
+                                <!-- <ToggleButton Content="Trim" 
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Top"/> -->
 
-                            <!-- <DataTemplate x:DataType="ImageSource">
-                                <Grid Height="150">
-                                    <Image Source="{x:Bind}"/>
-                                </Grid>
-                            </DataTemplate> -->
-                            
-                        </GridView.ItemTemplate>
-                    </GridView>
-                    
-                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                        
+                    </GridView.ItemTemplate>
+                </GridView>
                 
             </Grid>
             
         </Grid>
         
+    
     </Grid>
 </Window>

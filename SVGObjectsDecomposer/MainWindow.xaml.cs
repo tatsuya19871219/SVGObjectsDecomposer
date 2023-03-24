@@ -24,7 +24,7 @@ using Windows.ApplicationModel.DataTransfer;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Helper = SVGObjectsDecomposer.ValueConverterHelper;
+//using Helper = SVGObjectsDecomposer.ValueConverterHelper;
 using SVGObjectsDecomposer.Models;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -37,58 +37,23 @@ namespace SVGObjectsDecomposer;
 /// </summary>
 public sealed partial class MainWindow : Window
 {
+    // DataContext
     public AppStateViewModel AppState {get; set;} = new();
-
     public DecomposeEditorViewModel DecomposeEditor { get; set; } = new();
-
-    //public EditableSVGContainer EditingSVGContainer {get; set;}
-
-    //private SVGContainer _currentSVGContainer;
 
     public MainWindow()
     {
         this.InitializeComponent();
-        //AppState.Initialized();
     }
 
     void EvokeSVGDecomposerTask(Windows.Storage.StorageFile file)
     {
-
         var svgdoc = OpenSVGFile(file);
 
         //OriginalSVGImage.Source = Helper.ConvertToBitmapImage(svgdoc);
         DecomposeEditor.SetNewDocument(svgdoc);
 
         AppState.SVGLoaded();
-
-        //var svgContainer = new SVGContainer(svgdoc);
-
-
-        //_currentSVGContainer = svgContainer;
-        //EditingSVGContainer = new(svgContainer);
-
-        //CurrentSVGFilename.Text = svgContainer.Filename;
-
-        // test
-        // for (int i = 0; i < 5; i++)
-        // {
-        //     DecomposedImages.Items.Add(ConvertToBitmapImage(svgdoc));
-        // }
-
-        // foreach(var svgObject in svgContainer.SVGObjects)
-        // {
-        //     //DecomposedImages.Items.Add(ConvertToBitmapImage(svgObject.Image));
-        //     DecomposedImages.Items.Add(svgObject.Image);
-        // }
-
-        // var result = 
-        //     from obj in svgContainer.SVGObjects
-        //     group obj by obj.LayerID into g
-        //     orderby g.Key
-        //     select g;
-
-        // //DecomposedImages.ItemsSource = result;
-        // GroupedSVGObjects.Source = result;
     }
 
     SvgDocument OpenSVGFile(Windows.Storage.StorageFile file)
@@ -135,12 +100,10 @@ public sealed partial class MainWindow : Window
 
     private void App_DragOver(object sender, DragEventArgs e)
     {
-        //DragDropMessage.Text += "Here";
-
+        // When the user drags item over the view, change cursor appearance.
         if (e.DataView.Contains(StandardDataFormats.StorageItems))
         {
             e.AcceptedOperation = DataPackageOperation.Copy;    
-
         }
     }
 
@@ -148,6 +111,7 @@ public sealed partial class MainWindow : Window
     {
         var items = await e.DataView.GetStorageItemsAsync();
 
+        // Single file is only acceptable.
         if (items.Count != 1)
         {
             ShowWarningAlart("Please give a single SVG file.");
@@ -181,14 +145,12 @@ public sealed partial class MainWindow : Window
     {
         if (e.AddedItems.Count == 0)
         {
-            //SelectedSVGObject.Source = null;
             DecomposeEditor.SelectedSVGObject = null;
             return;
         }
 
         var selectedSVGObject = e.AddedItems[0] as SVGObject;
 
-        //SelectedSVGObject.Source = Helper.ConvertToBitmapImage(selectedSVGObject.Image);
         DecomposeEditor.SelectedSVGObject = selectedSVGObject;
     }
 

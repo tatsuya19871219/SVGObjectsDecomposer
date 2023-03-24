@@ -11,17 +11,11 @@ namespace SVGObjectsDecomposer;
 
 public partial class DecomposeEditorViewModel : ObservableObject
 {
-    //public string Message = "Hey";
-
-    //SvgDocument _currentDocument;
-
+    
     [ObservableProperty] SvgDocument currentDocument;
-
-    //public EditableSVGContainer EditingSVGContainer {get; set;}
     [ObservableProperty] EditableSVGContainer editingSVGContainer;
-    [ObservableProperty] object grouped;
-    //[ObservableProperty] EditableSVGObject selectedSVGObject;
     [ObservableProperty] SVGObject selectedSVGObject;
+    [ObservableProperty] object grouped;
 
     public DecomposeEditorViewModel() { }
 
@@ -50,10 +44,6 @@ public partial class DecomposeEditorViewModel : ObservableObject
         Grouped = null;
     }
 
-    // internal void SelectSVGObject(SVGObject svgObject)
-    // {
-    //     SelectedSVGObject = svgObject;
-    // }
 
     internal void Save() => EditingSVGContainer.SaveAll();
 }
