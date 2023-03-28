@@ -15,7 +15,7 @@ public partial class DecomposeEditorViewModel : ObservableObject
     [ObservableProperty] SvgDocument currentDocument;
     [ObservableProperty] EditableSVGContainer editingSVGContainer;
     [ObservableProperty] SVGObject selectedSVGObject;
-    [ObservableProperty] object grouped;
+    [ObservableProperty] object layeredObjects;
 
     public DecomposeEditorViewModel() { }
 
@@ -27,9 +27,16 @@ public partial class DecomposeEditorViewModel : ObservableObject
 
         EditingSVGContainer = new EditableSVGContainer(svgContainer);
 
-        Grouped = 
-            from obj in svgContainer.SVGObjects
-            group obj by obj.LayerID into g
+        // Grouped = 
+        //     from obj in svgContainer.SVGObjects
+        //     group obj by obj.LayerID into g
+        //     orderby g.Key
+        //     select g;
+
+        LayeredObjects = 
+            from layer in EditingSVGContainer.Layers
+            from obj in layer.Objects
+            group obj by layer.LayerName into g
             orderby g.Key
             select g;
     }
@@ -40,8 +47,8 @@ public partial class DecomposeEditorViewModel : ObservableObject
     {
         CurrentDocument = null;
         EditingSVGContainer.Dispose();
-        //EditingSVGContainer = null;
-        Grouped = null;
+        EditingSVGContainer = null;
+        LayeredObjects = null;
     }
 
 

@@ -90,7 +90,7 @@
                 
                 <Grid.Resources>
                     <CollectionViewSource x:Name="GroupedSVGObjects" IsSourceGrouped="True"
-                                            Source="{Binding Grouped, Mode=TwoWay}"/>
+                                            Source="{Binding LayeredObjects, Mode=TwoWay}"/>
                 </Grid.Resources>
                 
 
@@ -116,7 +116,7 @@
 
                     <GridView.ItemTemplate>
                         
-                        <DataTemplate x:DataType="models:SVGObject">
+                        <DataTemplate x:DataType="models:EditableSVGObject">
                             <Grid Height="150">
 
                                 <Grid.Background>
@@ -126,7 +126,7 @@
                                 <!-- <Image Source="{x:Bind local:ValueConverterHelper.ConvertToBitmapImage(SvgDoc)}"/> -->
                                 <custom:SVGImageView Document="{Binding SvgDoc}"/>
 
-                                <TextBlock Text="{x:Bind ElementName}"/>
+                                <TextBlock Text="{Binding ElementName}"/>
                                 <!-- <ToggleButton Content="Trim" 
                                                 HorizontalAlignment="Right"
                                                 VerticalAlignment="Top"/> -->

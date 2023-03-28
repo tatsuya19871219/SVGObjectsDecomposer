@@ -17,10 +17,10 @@ public class SVGObject
     //readonly SvgDocument _svgDoc;
 
     public SvgDocument SvgDoc {get; init;}
-    public string LayerID {get; init;}
+    //public string LayerID {get; init;}
     public string ElementName {get; init;}
 
-    public SVGObject(SVGDocumentTemplete docTemplete, SVGLayerTemplete layerTemplete, SvgElement element)
+    public SVGObject(SvgElement element, SVGLayerTemplete layerTemplete, SVGDocumentTemplete docTemplete)
     {
         var document = docTemplete.CreateNewDocument();
         var layer = layerTemplete.CreateNewLayer();
@@ -30,7 +30,7 @@ public class SVGObject
 
         SvgDoc = document;        
 
-        LayerID = layer.ID;
+        //LayerID = layer.ID;
 
         ElementName = element.ID;
 

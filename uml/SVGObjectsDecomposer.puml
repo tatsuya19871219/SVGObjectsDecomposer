@@ -73,12 +73,12 @@ class SVGLayerTemplete
 
 class SVGLayer
 {
-    - name : string
+    - name : string <<read only>>
 }
 
 class EditableSVGLayer
 {
-
+    - Name : string <<observable property>>
 }
 
 class SVGObject
@@ -98,7 +98,7 @@ class EditableSVGObject
 
 
 ' arrows
-MainWindow -left-> AppStateViewModel
+MainWindow -right-> AppStateViewModel
 'MainWindow --> EditableSVGContainer
 MainWindow --> DecomposeEditorViewModel
 
@@ -107,13 +107,17 @@ EditableSVGLayer --> SVGLayer
 EditableSVGContainer --> SVGContainer
 
 SVGContainer --> SVGDocumentTemplete
-SVGContainer --> SVGLayerTemplete
+'SVGContainer --> SVGLayerTemplete
+SVGLayer --> SVGLayerTemplete
 
-SVGContainer *- SVGObject
-EditableSVGContainer *- EditableSVGObject
+'SVGContainer *- SVGObject
+'EditableSVGContainer *- EditableSVGObject
 
 SVGContainer *- SVGLayer
 EditableSVGContainer *- EditableSVGLayer
+
+SVGLayer *- SVGObject
+EditableSVGLayer *- EditableSVGObject
 
 'EditableSVGContainer -up-|> ObservableObject
 'EditableSVGObject -up-|> ObservableObject

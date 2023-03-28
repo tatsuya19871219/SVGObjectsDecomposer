@@ -96,6 +96,7 @@ public sealed partial class MainWindow : Window
     private void SaveButton_Click(object sender, RoutedEventArgs e)
     {
         //
+        DecomposeEditor.Save();
     }
 
     private void App_DragOver(object sender, DragEventArgs e)
