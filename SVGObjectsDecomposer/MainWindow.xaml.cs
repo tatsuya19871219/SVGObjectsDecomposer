@@ -150,7 +150,7 @@ public sealed partial class MainWindow : Window
             return;
         }
 
-        var selectedSVGObject = e.AddedItems[0] as SVGObject;
+        var selectedSVGObject = e.AddedItems[0] as EditableSVGObject;
 
         DecomposeEditor.SelectedSVGObject = selectedSVGObject;
     }

@@ -13,6 +13,7 @@ public partial class EditableSVGContainer : ObservableObject, IDisposable
 {
     readonly SVGContainer _svgContainer;
 
+    [ObservableProperty] string originalFilePath;
     [ObservableProperty] string filename;
 
     readonly internal ObservableCollection<EditableSVGLayer> Layers = new();
@@ -23,6 +24,10 @@ public partial class EditableSVGContainer : ObservableObject, IDisposable
         _svgContainer = svgContainer;
 
         // Set ititial values of observable properties
+        Uri baseUri = _svgContainer.GetBaseUri();
+
+        OriginalFilePath = baseUri.AbsolutePath;
+
         Filename = _svgContainer.Filename;
 
         foreach (var layer in _svgContainer.Layers)
@@ -44,40 +49,36 @@ public partial class EditableSVGContainer : ObservableObject, IDisposable
         Layers.Clear();
     }
 
-    internal void SaveAll()
-    {
-        // After the instance is disposed, throw the exception
-        if (Filename is null) throw new Exception("The instance is already disposed");
+    // internal void SaveAll()
+    // {
+    //     // After the instance is disposed, throw the exception
+    //     if (Filename is null) throw new Exception("The instance is already disposed");
 
-        Uri baseUri = _svgContainer.GetBaseUri();
+    //     string originalDirname = Path.GetDirectoryName(OriginalFilePath);
+    //     string originalFileBasename = Path.GetFileNameWithoutExtension(OriginalFilePath);
 
-        string originalFilePath = baseUri.AbsolutePath;
+    //     // for test
+    //     string outputBaseDirname = $"{originalDirname}/output_{originalFileBasename}";
 
-        string originalDirname = Path.GetDirectoryName(originalFilePath);
-        string originalFileBasename = Path.GetFileNameWithoutExtension(originalFilePath);
+    //     if (!Directory.Exists(outputBaseDirname)) Directory.CreateDirectory(outputBaseDirname);
 
-        // for test
-        string outputBaseDirname = $"{originalDirname}/output_{originalFileBasename}";
+    //     foreach (var layer in Layers)
+    //     {
+    //         string layerName = layer.LayerName;
 
-        if (!Directory.Exists(outputBaseDirname)) Directory.CreateDirectory(outputBaseDirname);
+    //         string outputDirname = $"{outputBaseDirname}/{layerName}";
 
-        foreach (var layer in Layers)
-        {
-            string layerName = layer.LayerName;
+    //         if (!Directory.Exists(outputDirname)) Directory.CreateDirectory(outputDirname);
 
-            string outputDirname = $"{outputBaseDirname}/{layerName}";
+    //         foreach (var obj in layer.Objects)
+    //         {
+    //             string filename = obj.ElementName.ToLower();
 
-            if (!Directory.Exists(outputDirname)) Directory.CreateDirectory(outputDirname);
+    //             string outputFilePath = $"{outputDirname}/{filename}.svg";
 
-            foreach (var obj in layer.Objects)
-            {
-                string filename = obj.ElementName.ToLower();
-
-                string outputFilePath = $"{outputDirname}/{filename}.svg";
-
-                obj.SvgDoc.Write(outputFilePath);
-            }
-        }
-    }
+    //             obj.SvgDoc.Write(outputFilePath);
+    //         }
+    //     }
+    // }
 }
 

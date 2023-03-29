@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Svg;
 using SVGObjectsDecomposer.Models;
+using SVGObjectsDecomposer.OutputWriters;
 
 namespace SVGObjectsDecomposer;
 
@@ -14,8 +15,9 @@ public partial class DecomposeEditorViewModel : ObservableObject
     
     [ObservableProperty] SvgDocument currentDocument;
     [ObservableProperty] EditableSVGContainer editingSVGContainer;
-    [ObservableProperty] SVGObject selectedSVGObject;
+    [ObservableProperty] EditableSVGObject selectedSVGObject;
     [ObservableProperty] object layeredObjects;
+    [ObservableProperty] OutputPurpose outputPurposeType = OutputPurpose.Generic;
 
     public DecomposeEditorViewModel() { }
 
@@ -52,5 +54,10 @@ public partial class DecomposeEditorViewModel : ObservableObject
     }
 
 
-    internal void Save() => EditingSVGContainer.SaveAll();
+    internal void Save() //=> EditingSVGContainer.SaveAll();
+    {
+        IOutputWriter writer = OutputWriterFactory.Create(EditingSVGContainer, OutputPurposeType);
+
+        writer.Execute();
+    }
 }

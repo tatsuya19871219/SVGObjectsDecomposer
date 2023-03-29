@@ -56,15 +56,37 @@
 
                 </Grid>
 
-                <Grid x:Name="CurrentSVGImageInfo" 
-                            Height="100"
-                            Margin="90, 30, 60, 30">
-                            <StackPanel Orientation="Vertical">
-                    <TextBlock x:Name="CurrentSVGFilename"
-                                Text="{x:Bind DecomposeEditor.EditingSVGContainer.Filename, Mode=TwoWay}"/>
-                                <TextBlock Text="Hey"/>
-                        </StackPanel>
-                </Grid>
+                <ScrollViewer x:Name="CurrentSVGImageInfo" 
+                            Margin="90, 10, 60, 10"
+                              Height="150">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Original SVG file path:"/>
+                        <TextBlock Text="{x:Bind DecomposeEditor.EditingSVGContainer.OriginalFilePath, Mode=OneWay,
+                                                FallbackValue='SVG file is not opened yet.'}"/>
+                        <!--<TextBlock x:Name="CurrentSVGFilename"
+                                Text="{x:Bind DecomposeEditor.EditingSVGContainer.Filename, Mode=TwoWay}"/>-->
+                        <!-- <TextBlock Text="Hey"/> -->
+                        
+                        <!--<RadioButtons Header="Purpose:">
+                            <RadioButton Content="Generic"/>
+                            <RadioButton Content="Animation"/>
+                            <RadioButton Content="PositionTracking"/>
+                        </RadioButtons>-->
+
+                        <TextBlock Text="Purpose:"/>
+                        <DropDownButton Content="AAA">
+                            <DropDownButton.Flyout>
+                                <MenuFlyout Placement="Bottom">
+                                    <MenuFlyoutItem Text="Generic"/>
+                                    <MenuFlyoutItem Text="Animation"/>
+                                    <MenuFlyoutItem Text="Position Tracking"/>
+                                </MenuFlyout>
+                            </DropDownButton.Flyout>
+                        </DropDownButton>
+
+                        <TextBlock Text="Output directory path:"/>
+                    </StackPanel>
+                </ScrollViewer>
 
                 <StackPanel BorderBrush="Black" BorderThickness="1"
                     Orientation="Horizontal"
@@ -79,7 +101,6 @@
                     </StackPanel.Resources>
                     
                     <Button Content="Open a SVG file" Click="OpenFileButton_Click"/>
-                    <!--<Button Content="Trim parts"/>-->
                     <Button Content="Save SVG parts" Click="SaveButton_Click"/>
                     <Button Content="Close the SVG file" Click="CloseFileButton_Click"/>
                 </StackPanel>

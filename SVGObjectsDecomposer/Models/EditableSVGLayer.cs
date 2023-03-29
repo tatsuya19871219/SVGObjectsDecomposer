@@ -8,7 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SVGObjectsDecomposer.Models;
 
-internal partial class EditableSVGLayer : ObservableObject, IDisposable
+public partial class EditableSVGLayer : ObservableObject, IDisposable
 {
     readonly SVGLayer _svgLayer;
 

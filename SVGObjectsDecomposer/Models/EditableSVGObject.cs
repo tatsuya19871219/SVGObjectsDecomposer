@@ -8,7 +8,7 @@ using Svg;
 
 namespace SVGObjectsDecomposer.Models;
 
-internal partial class EditableSVGObject : ObservableObject, IDisposable
+public partial class EditableSVGObject : ObservableObject, IDisposable
 {
     readonly SVGObject _svgObject;
 
