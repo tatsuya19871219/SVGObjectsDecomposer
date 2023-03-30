@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Xaml;
 using Svg;
 using SVGObjectsDecomposer.Models;
 using SVGObjectsDecomposer.OutputWriters;
@@ -59,6 +60,14 @@ public partial class DecomposeEditorViewModel : ObservableObject
     }
 
     private void SetOutputPurpose(OutputPurpose purpose) => OutputPurposeType = purpose;
+
+    //private bool IsOutputPurposeOf(OutputPurpose purpose) => OutputPurposeType.Equals(purpose);
+
+    //public Visibility AsVisibleWhen(OutputPurpose purpose) => IsOutputPurposeOf(purpose) ? Visibility.Visible : Visibility.Collapsed;
+
+    //public Visibility AsVisibleIf(OutputPurpose purpose, OutputPurpose targetPurpose) => AsVisibleIf( purpose.Equals(targetPurpose) );
+
+    //public Visibility AsVisibleIf(bool flag) => flag ? Visibility.Visible : Visibility.Collapsed;
 
 
     //internal void DiscardChanges() => SetNewDocument(_currentDocument);

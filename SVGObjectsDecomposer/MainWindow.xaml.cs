@@ -158,3 +158,22 @@ public sealed partial class MainWindow : Window
 
     
 }
+
+//public class OutputPurposeToVisibilityConverter : IValueConverter
+//{
+//    public object Convert(object value, Type targetType, object parameter, string language)
+//    {
+//        OutputPurpose purpose = (OutputPurpose)value;
+
+//        OutputPurpose targetPurpose = (OutputPurpose)parameter;
+
+//        bool isSame = purpose.Equals(targetPurpose);
+
+//        return isSame ? Visibility.Visible : Visibility.Collapsed;
+//    }
+
+//    public object ConvertBack(object value, Type targetType, object parameter, string language)
+//    {
+//        throw new NotImplementedException();
+//    }
+//}

@@ -10,12 +10,19 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:svg="using:Svg"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:brushes="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:custom="using:SVGObjectsDecomposer.Views"
     xmlns:writer="using:SVGObjectsDecomposer.OutputWriters"
     mc:Ignorable="d">
 
+
     <Grid>
+
+        <!--<Grid.Resources>
+            <local:OutputPurposeToVisibilityConverter x:Key="OutputPurposeToVisibilityConverter"/>
+        </Grid.Resources>-->
+
 
         <Grid>
             <Grid.ColumnDefinitions>
@@ -66,7 +73,13 @@
                             <Setter Property="FontWeight" Value="Bold"/>
                         </Style>
 
-                        <Thickness x:Key="InfoBodyMargin">20, 5, 0, 10</Thickness>
+                        <Thickness x:Key="InfoBodyMargin">20, 5, 5, 10</Thickness>
+
+                        <Style x:Key="InfoPurposeDetailsStyle" TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="Blue"/>
+                            <Setter Property="FontStyle" Value="Italic"/>
+                            <Setter Property="Margin" Value="{StaticResource InfoBodyMargin}"/>
+                        </Style>
 
                     </ScrollViewer.Resources>
                     <StackPanel Orientation="Vertical">
@@ -96,6 +109,18 @@
                                 
                             </DropDownButton.Flyout>
                         </DropDownButton>
+
+                        <TextBlock Text="Export SVG images with a same size of the original SVG image for each object."
+                                   Style="{StaticResource InfoPurposeDetailsStyle}"
+                                   Visibility="{x:Bind local:BindingHelper.AsVisibleIfSame(DecomposeEditor.OutputPurposeType, writer:OutputPurpose.Generic), Mode=OneWay}"/>
+
+                        <TextBlock Text="Export trimmed SVG images and anchor location of each object as a csv formatted text."
+                                   Style="{StaticResource InfoPurposeDetailsStyle}"
+                                   Visibility="{x:Bind local:BindingHelper.AsVisibleIfSame(DecomposeEditor.OutputPurposeType, writer:OutputPurpose.Animation), Mode=OneWay}"/>
+
+                        <TextBlock Text="Export the original SVG image and path data of each path object as a resource dictionary (xaml)."                                   
+                                   Style="{StaticResource InfoPurposeDetailsStyle}"
+                                   Visibility="{x:Bind local:BindingHelper.AsVisibleIfSame(DecomposeEditor.OutputPurposeType, writer:OutputPurpose.PositionTracking), Mode=OneWay}"/>
 
                         <TextBlock Text="Output directory path:"
                                    Style="{StaticResource InfoHeaderStyle}"/>
