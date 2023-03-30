@@ -24,7 +24,6 @@ using Windows.ApplicationModel.DataTransfer;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-//using Helper = SVGObjectsDecomposer.ValueConverterHelper;
 using SVGObjectsDecomposer.Models;
 using SVGObjectsDecomposer.OutputWriters;
 
@@ -158,22 +157,3 @@ public sealed partial class MainWindow : Window
 
     
 }
-
-//public class OutputPurposeToVisibilityConverter : IValueConverter
-//{
-//    public object Convert(object value, Type targetType, object parameter, string language)
-//    {
-//        OutputPurpose purpose = (OutputPurpose)value;
-
-//        OutputPurpose targetPurpose = (OutputPurpose)parameter;
-
-//        bool isSame = purpose.Equals(targetPurpose);
-
-//        return isSame ? Visibility.Visible : Visibility.Collapsed;
-//    }
-
-//    public object ConvertBack(object value, Type targetType, object parameter, string language)
-//    {
-//        throw new NotImplementedException();
-//    }
-//}
