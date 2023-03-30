@@ -26,6 +26,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 //using Helper = SVGObjectsDecomposer.ValueConverterHelper;
 using SVGObjectsDecomposer.Models;
+using SVGObjectsDecomposer.OutputWriters;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.

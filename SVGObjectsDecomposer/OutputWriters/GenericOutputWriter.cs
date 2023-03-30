@@ -11,29 +11,27 @@ namespace SVGObjectsDecomposer.OutputWriters
     class GenericOutputWriter : IOutputWriter
     {
         readonly EditableSVGContainer _container;
+
+        readonly string _outputBaseDirname;
         
-        internal GenericOutputWriter(EditableSVGContainer container)
+        internal GenericOutputWriter(EditableSVGContainer container, string outputBaseDirname)
         {
             _container = container;
+            _outputBaseDirname = outputBaseDirname;
         }
         public void Execute()
         {
             // After the container instance is disposed, throw the exception
             if (_container.Filename is null) throw new Exception("The instance is already disposed");
 
-            string originalDirname = GetOriginalDirname();
-            string originalFileBasename = GetOriginalFileBasename();
-
-            // for test
-            string outputBaseDirname = $"{originalDirname}/output_{originalFileBasename}";
-
-            if (!Directory.Exists(outputBaseDirname)) Directory.CreateDirectory(outputBaseDirname);
+            
+            if (!Directory.Exists(_outputBaseDirname)) Directory.CreateDirectory(_outputBaseDirname);
 
             foreach (var layer in _container.Layers)
             {
                 string layerName = layer.LayerName;
 
-                string outputDirname = $"{outputBaseDirname}/{layerName}";
+                string outputDirname = $"{_outputBaseDirname}/{layerName}";
 
                 if (!Directory.Exists(outputDirname)) Directory.CreateDirectory(outputDirname);
 
@@ -49,10 +47,5 @@ namespace SVGObjectsDecomposer.OutputWriters
 
         }
 
-        //string GetOriginalFilename() => _container.Filename;
-        string GetOriginalDirname() => Path.GetDirectoryName(_container.OriginalFilePath);
-        string GetOriginalFileBasename()
-            => Path.GetFileNameWithoutExtension(_container.OriginalFilePath);
-        
     }
 }

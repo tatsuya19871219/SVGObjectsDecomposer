@@ -12,6 +12,7 @@
     xmlns:svg="using:Svg"
     xmlns:brushes="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:custom="using:SVGObjectsDecomposer.Views"
+    xmlns:writer="using:SVGObjectsDecomposer.OutputWriters"
     mc:Ignorable="d">
 
     <Grid>
@@ -30,8 +31,8 @@
                         AllowDrop="True"
                         DragOver="App_DragOver"
                         Drop="App_Drop"
-                        Margin="40"
-                        Height="350">
+                        Margin="30"
+                        Height="300">
 
                     <Grid.Background>
                         <brushes:TilesBrush TextureUri="/Assets/TileBase.png"/>
@@ -57,34 +58,49 @@
                 </Grid>
 
                 <ScrollViewer x:Name="CurrentSVGImageInfo" 
-                            Margin="90, 10, 60, 10"
-                              Height="150">
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="Original SVG file path:"/>
-                        <TextBlock Text="{x:Bind DecomposeEditor.EditingSVGContainer.OriginalFilePath, Mode=OneWay,
-                                                FallbackValue='SVG file is not opened yet.'}"/>
-                        <!--<TextBlock x:Name="CurrentSVGFilename"
-                                Text="{x:Bind DecomposeEditor.EditingSVGContainer.Filename, Mode=TwoWay}"/>-->
-                        <!-- <TextBlock Text="Hey"/> -->
-                        
-                        <!--<RadioButtons Header="Purpose:">
-                            <RadioButton Content="Generic"/>
-                            <RadioButton Content="Animation"/>
-                            <RadioButton Content="PositionTracking"/>
-                        </RadioButtons>-->
+                            Margin="90, 10, 30, 10"
+                              Height="200">
+                    <ScrollViewer.Resources>
+                        <Style x:Key="InfoHeaderStyle" TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="16"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                        </Style>
 
-                        <TextBlock Text="Purpose:"/>
-                        <DropDownButton Content="AAA">
+                        <Thickness x:Key="InfoBodyMargin">20, 5, 0, 10</Thickness>
+
+                    </ScrollViewer.Resources>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Original SVG file path:"
+                                    Style="{StaticResource InfoHeaderStyle}"/>
+                        <TextBlock Text="{x:Bind DecomposeEditor.EditingSVGContainer.OriginalFilePath, Mode=OneWay,
+                                                FallbackValue='SVG file is not opened yet.'}"
+                                                Margin="{StaticResource InfoBodyMargin}"/>
+                        
+
+                        <TextBlock Text="Purpose:"
+                                   Style="{StaticResource InfoHeaderStyle}"/>
+                        <DropDownButton Content="{x:Bind DecomposeEditor.OutputPurposeType, Mode=OneWay}"
+                                        Margin="{StaticResource InfoBodyMargin}">
                             <DropDownButton.Flyout>
+
                                 <MenuFlyout Placement="Bottom">
-                                    <MenuFlyoutItem Text="Generic"/>
-                                    <MenuFlyoutItem Text="Animation"/>
-                                    <MenuFlyoutItem Text="Position Tracking"/>
+
+                                    <MenuFlyoutItem Text="Generic" Command="{x:Bind DecomposeEditor.SetOutputPurposeCommand}" 
+                                                                    CommandParameter="{x:Bind writer:OutputPurpose.Generic}"/>
+                                    <MenuFlyoutItem Text="Animation" Command="{x:Bind DecomposeEditor.SetOutputPurposeCommand}"
+                                                                        CommandParameter="{x:Bind writer:OutputPurpose.Animation}"/>
+                                    <MenuFlyoutItem Text="Position Tracking" Command="{x:Bind DecomposeEditor.SetOutputPurposeCommand}"
+                                                                                CommandParameter="{x:Bind writer:OutputPurpose.PositionTracking}"/>
+                                    
                                 </MenuFlyout>
+                                
                             </DropDownButton.Flyout>
                         </DropDownButton>
 
-                        <TextBlock Text="Output directory path:"/>
+                        <TextBlock Text="Output directory path:"
+                                   Style="{StaticResource InfoHeaderStyle}"/>
+                        <TextBlock Text="{x:Bind DecomposeEditor.OutputBaseDirname, Mode=TwoWay}"
+                                   Margin="{StaticResource InfoBodyMargin}"/>
                     </StackPanel>
                 </ScrollViewer>
 

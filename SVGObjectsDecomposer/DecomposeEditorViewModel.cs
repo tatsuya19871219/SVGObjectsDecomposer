@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Svg;
 using SVGObjectsDecomposer.Models;
 using SVGObjectsDecomposer.OutputWriters;
@@ -18,8 +20,16 @@ public partial class DecomposeEditorViewModel : ObservableObject
     [ObservableProperty] EditableSVGObject selectedSVGObject;
     [ObservableProperty] object layeredObjects;
     [ObservableProperty] OutputPurpose outputPurposeType = OutputPurpose.Generic;
+    [ObservableProperty] string outputBaseDirname;
 
-    public DecomposeEditorViewModel() { }
+    public ICommand SetOutputPurposeCommand { get; }
+
+    OutputWriterFactory _outputWriterFactory;
+
+    public DecomposeEditorViewModel() 
+    {
+        SetOutputPurposeCommand = new RelayCommand<OutputPurpose>(SetOutputPurpose);
+    }
 
     internal void SetNewDocument(SvgDocument document)
     {
@@ -41,7 +51,15 @@ public partial class DecomposeEditorViewModel : ObservableObject
             group obj by layer.LayerName into g
             orderby g.Key
             select g;
+
+        _outputWriterFactory = new OutputWriterFactory(EditingSVGContainer);
+
+        OutputBaseDirname = _outputWriterFactory.GetDefaultOutputBaseDirname();
+        
     }
+
+    private void SetOutputPurpose(OutputPurpose purpose) => OutputPurposeType = purpose;
+
 
     //internal void DiscardChanges() => SetNewDocument(_currentDocument);
 
@@ -51,12 +69,14 @@ public partial class DecomposeEditorViewModel : ObservableObject
         EditingSVGContainer.Dispose();
         EditingSVGContainer = null;
         LayeredObjects = null;
+        outputBaseDirname = null;
+        _outputWriterFactory = null;
     }
 
 
     internal void Save() //=> EditingSVGContainer.SaveAll();
     {
-        IOutputWriter writer = OutputWriterFactory.Create(EditingSVGContainer, OutputPurposeType);
+        IOutputWriter writer = _outputWriterFactory.Create(OutputBaseDirname, OutputPurposeType);
 
         writer.Execute();
     }

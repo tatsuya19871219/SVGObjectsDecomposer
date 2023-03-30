@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,22 +10,40 @@ namespace SVGObjectsDecomposer.OutputWriters
 {
     class OutputWriterFactory
     {
-        private OutputWriterFactory()
+        readonly EditableSVGContainer _container;
+        internal OutputWriterFactory(EditableSVGContainer container)
         {
-
+            _container = container;
         }
 
-        static internal IOutputWriter Create(EditableSVGContainer container, OutputPurpose purpose)
+        internal IOutputWriter Create(string outputBaseDirname, OutputPurpose purpose)
         {
             switch (purpose)
             {
                 case OutputPurpose.Generic:
-                    return new GenericOutputWriter(container);
+                    return new GenericOutputWriter(_container, outputBaseDirname);
                     
                 default:
                     throw new Exception("Unknown OutputPurpose is given.");
                     
             }
+        }
+
+        //string GetOriginalFilename() => _container.Filename;
+        internal string GetOriginalDirname() => Path.GetDirectoryName(_container.OriginalFilePath);
+        internal string GetOriginalFileBasename()
+            => Path.GetFileNameWithoutExtension(_container.OriginalFilePath);
+
+        //
+        internal string GetDefaultOutputBaseDirname()
+        {
+            string originalDirname = GetOriginalDirname();
+            string originalFileBasename = GetOriginalFileBasename();
+
+            // for test
+            string outputBaseDirname = $"{originalDirname}/output_{originalFileBasename}";
+
+            return outputBaseDirname;
         }
     }
 }
