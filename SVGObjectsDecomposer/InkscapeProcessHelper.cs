@@ -67,4 +67,10 @@ static class InkscapeProcessHelper
             throw new Exception(ex.Message);
         }
     }
+
+    // object-to-path
+    // ex.
+    // inkscape --select=path1262 --actions="object-to-path" --export-filename=bbb.svg .\aaa.svg
+    // it also works for layer-wise:
+    // inkscape --select=layer1 --actions="object-to-path" --export-filename=hoge.svg .\TileBase.svg
 }

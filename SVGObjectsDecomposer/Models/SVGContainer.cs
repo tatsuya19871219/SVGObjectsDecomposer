@@ -10,6 +10,7 @@ class SVGContainer
 {
     readonly Uri _baseUri;
     readonly public string Filename;
+    readonly public SvgViewBox ViewBox;
     readonly public List<SVGLayer> Layers = new();
     
     internal SVGContainer(SvgDocument document)
@@ -20,6 +21,8 @@ class SVGContainer
 
         //Filename = _baseUri.Segments.Last();
         Filename = _baseUri.Segments[^1]; // Same as above
+
+        ViewBox = document.ViewBox;
 
         var templeteDocument = SVGDocumentTemplete.Extract(document, out var firstLayers);
 

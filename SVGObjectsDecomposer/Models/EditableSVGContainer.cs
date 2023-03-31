@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Svg;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,8 +14,9 @@ public partial class EditableSVGContainer : ObservableObject, IDisposable
 {
     readonly SVGContainer _svgContainer;
 
-    [ObservableProperty] string originalFilePath;
-    [ObservableProperty] string filename;
+    [ObservableProperty] string _originalFilePath;
+    [ObservableProperty] string _filename;
+    [ObservableProperty] SvgViewBox _viewBox;
 
     readonly internal ObservableCollection<EditableSVGLayer> Layers = new();
     //readonly internal ObservableCollection<EditableSVGObject> Objects = new();
@@ -29,6 +31,8 @@ public partial class EditableSVGContainer : ObservableObject, IDisposable
         OriginalFilePath = baseUri.AbsolutePath;
 
         Filename = _svgContainer.Filename;
+
+        ViewBox = _svgContainer.ViewBox;
 
         foreach (var layer in _svgContainer.Layers)
            Layers.Add(new EditableSVGLayer(layer));

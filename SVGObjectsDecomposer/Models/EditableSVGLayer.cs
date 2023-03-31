@@ -12,7 +12,7 @@ public partial class EditableSVGLayer : ObservableObject, IDisposable
 {
     readonly SVGLayer _svgLayer;
 
-    [ObservableProperty] string layerName;
+    [ObservableProperty] string _layerName;
 
     readonly internal ObservableCollection<EditableSVGObject> Objects = new();
 

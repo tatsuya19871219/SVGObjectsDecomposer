@@ -40,57 +40,100 @@ class DecomposeEditorViewModel
     + Save() : void
 }
 
-' Models
+
+
+'  Helper class
+class BindingHelper << (H, pink) static >>
+{
+    {static} + AsVisibleIfSame(purpose : OutputPurpose, targetPurpose : OutputPurpose) : Visibility
+    {static} + AsVisibleIf(flag : bool) : Visibility
+    {static} + AsVisibleIfNot(flag : bool) : Visibility
+}
+
+' packages
+package Models
+{
+    class EditableSVGContainer
+}
+
+package OutputWriters
+{
+    class OutputWriterFactory
+}
+
+' arrows
+MainWindow -right-> AppStateViewModel
+MainWindow --> DecomposeEditorViewModel
+MainWindow .up.> BindingHelper : <use>
+
+DecomposeEditorViewModel --> EditableSVGContainer
+DecomposeEditorViewModel -> OutputWriterFactory
+
+
+@enduml
+
+@startuml Models
+
 class EditableSVGContainer
 {
     - svgContainer : SVGContainer <<read only>>
-    - editableSVGObjects : List<EditableSVGObject> <<read only>>
-    + EditableSVGContainer(svgContainer : SVGContainer)
-    + Resize(width : double, height : double) : void
-    '+ TrimAll() : void
-    + SaveAll() : void
-    + GenerateXAMLSample() : void
+    + OriginalFilePath : string <<observable property>>
+    + Filename : string <<observable property>>
+    + ViewBox : SvgViewBox <<observable property>>
+    ~ Layers : ObservableCollection<EditableSVGLayer> <<read only>>
+    ~ EditableSVGContainer(svgContainer : SVGContainer)
+    + Dispose() : void
+    ' + Resize(width : double, height : double) : void
+    ' '+ TrimAll() : void
+    ' + SaveAll() : void
+    ' + GenerateXAMLSample() : void
 }
 
 class EditableSVGLayer
 {
-    - Name : string <<observable property>>
+    - svgLayer : SVGLayer <<read only>>
+    + LayerName : string <<observable property>>
+    ~ Objects : ObservableCollection<EditableSVGObject> <<read only>>
+    ~ EditableLayer(svgLayer : SVGLayer)
+    + Dispose() : void
 }
-
-
 
 class EditableSVGObject
 {
-    - original : SVGObject
+    - svgObject : SVGObject
     '- trimmed : SVGObject
-    + EditableSVGObject(svgObject : SVGObject)
-    + IsTrimmed : bool
-    + Trim() : void
+    + SvgDoc : SvgDocument <<get only>>
+    + ElementName : string <<observable property>>
+    + Bounds : RectangleF <<observable property>>
+    ~ EditableSVGObject(svgObject : SVGObject)
+    '+ IsTrimmed : bool
+    '+ Trim() : void
+    + Dispose() : void
 }
-
-
 
 class SVGContainer
 {
-    + LayerCounts : int <<read only>>
-    + LayerNames : List<string> <<read only>>
-    + SVGObjects : List<SVGObject> <<read only>>
-    - document : SvgDocument <<read only>>
-    - templeteDocument : SVGDocumentTemplete <<read only>>
-    - firstLayers : List<SvgGroup> <<read only>>
+    - baseUri : Uri <<read only>>
+    + Filename : string <<read only>>
+    + ViewBox : SvgViewBox <<read only>>
+    + Layers : List<SVGLayer> <<read only>>
     ~ SVGContainer(document : SvgDocument)
-
+    ~ GetBaseUri() : Uri
 }
-
 
 class SVGLayer
 {
-    - name : string <<read only>>
+    + LayerName : string <<read only>>
+    + Objects : List<SVGObject> <<read only>>
+    ~ SVGLayer(layer : SvgGroup, templeteDocument : SVGDocumentTemplete)
 }
 
 class SVGObject
 {
-    - objectDocument : SvgDocument
+    + SvgDoc : SvgDocument <<get only>>
+    + ElementName : string <<get only>>
+    + Bounds : RectangleF <<get only>>
+    + SVGObject(element : SvgElement, layerTemplete : SVGLayerTemplete, docTemplete : SVGDocumentTemplete)
 }
 
 ' factories for SVG document creation
@@ -112,41 +155,40 @@ class SVGLayerTemplete
     ~ CreateNewLayer() : SvgGroup
 }
 
-
+' Helper class
+class InkscapeSVGHelper << (H, pink) static >>
+{
+    {static} - nkInkscape : XNamespace
+    {static} ~ TryGetInkscapeLabel(element : SvgElement, name : out string) : bool
+}
 
 ' arrows
-MainWindow -right-> AppStateViewModel
-'MainWindow --> EditableSVGContainer
-MainWindow --> DecomposeEditorViewModel
+EditableSVGObject -> SVGObject
+EditableSVGLayer -> SVGLayer
+EditableSVGContainer -> SVGContainer
 
-EditableSVGObject --> SVGObject
-EditableSVGLayer --> SVGLayer
-EditableSVGContainer --> SVGContainer
+SVGContainer *-down- SVGLayer
+SVGLayer *-down- SVGObject
 
-SVGContainer --> SVGDocumentTemplete
-'SVGContainer --> SVGLayerTemplete
-SVGLayer --> SVGLayerTemplete
+EditableSVGContainer *-down- EditableSVGLayer
+EditableSVGLayer *-down- EditableSVGObject
 
-'SVGContainer *- SVGObject
-'EditableSVGContainer *- EditableSVGObject
+SVGContainer -right-> SVGDocumentTemplete
+SVGLayer -right-> SVGLayerTemplete
 
-SVGContainer *- SVGLayer
-EditableSVGContainer *- EditableSVGLayer
-
-SVGLayer *- SVGObject
-EditableSVGLayer *- EditableSVGObject
-
-'EditableSVGContainer -up-|> ObservableObject
-'EditableSVGObject -up-|> ObservableObject
-
-DecomposeEditorViewModel --> EditableSVGContainer
-' DecomposeEditorViewModel -left-> OutputWriterFactory
-' DecomposeEditorViewModel -left-> OutputPurpose
-
+SVGLayer ..> InkscapeSVGHelper : <use>
+SVGObject .> InkscapeSVGHelper : <use>
 
 @enduml
 
 @startuml OutputWriters
+
+class InkscapeProcessHelper <<static>>
+{
+    {static} - inkscape : string
+    {static} ~ CheckInkscapeProcess() : bool
+    {static} ~ Trim(original : SvgDocument) : SvgDocument
+}
 
 enum OutputPurpose
 {
@@ -160,6 +202,17 @@ interface IOutputWriter
     Execute() : void
 }
 
+abstract AbstractOutputWriter
+{
+    # container : EditableSVGContainer <<read only>>
+    # outputBaseDirname : string <<read only>>
+    ~ AbstractOutputWriter(container : EditableSVGContainer, outputBaseDirname : string)
+    {abstract} + Execute() : void
+    # Prepare() : void
+    - CheckContainer() : void
+
+}
+
 class OutputWriterFactory
 {
     - container : EditableSVGContainer
@@ -170,32 +223,35 @@ class OutputWriterFactory
 
 class GenericOutputWriter
 {
-    - container : EditableSVGContainer
-    - outputBaseDirname : string
-    ~ GenericOutputWriter(container : EditableSVGContainer, outputBaseDirname : string)
-    + Execute() : void
+    ' ~ GenericOutputWriter(container : EditableSVGContainer, outputBaseDirname : string)
+    ' + Execute() : void
 }
 
-class AnimationOutputWriter
+class CustomOutputWriterForAnimation
 {
-
+    ' ~ CustomOutputWriterForAnimation(container : EditableSVGContainer, outputBaseDirname : string)
+    ' + Execute() : void
 }
 
-class TrackingOutputWriter
+class CustomOutputWriterForTracking
 {
-
+    ' ~ CustomOutputWriterForTracking(container : EditableSVGContainer, outputBaseDirname : string)
+    ' + Execute() : void
 }
 
-' Helper class
-' class BindingHelper <<static>>
-' {
-'     {static} + AsVisibleIfSame(purpose : OutputPurpose, targetPurpose : OutputPurpose) : Visibility
-' }
 
-GenericOutputWriter .up.|> IOutputWriter
-AnimationOutputWriter .up.|> IOutputWriter
-TrackingOutputWriter .up.|> IOutputWriter
+
+AbstractOutputWriter .up.|> IOutputWriter
+
+GenericOutputWriter .up.|> AbstractOutputWriter
+CustomOutputWriterForAnimation .up.|> AbstractOutputWriter
+CustomOutputWriterForTracking .up.|> AbstractOutputWriter
 
 OutputWriterFactory .down.> IOutputWriter : <create>
+
+CustomOutputWriterForAnimation ..> InkscapeProcessHelper : <use>
+CustomOutputWriterForTracking ..> InkscapeProcessHelper : <use>
+
+OutputWriterFactory ..> OutputPurpose : <use>
 
 @enduml

@@ -21,6 +21,7 @@ public class SVGObject
     public SvgDocument SvgDoc {get; init;}
     //public string LayerID {get; init;}
     public string ElementName {get; init;}
+    public RectangleF Bounds {get; init;}
 
     public SVGObject(SvgElement element, SVGLayerTemplete layerTemplete, SVGDocumentTemplete docTemplete)
     {
@@ -40,6 +41,9 @@ public class SVGObject
         if ( Helper.TryGetInkscapeLabel(element, out var inkscapeLabel) )
             ElementName = inkscapeLabel;
 
+        Bounds = document.Bounds;
+
+        // 
     }
 
     // string formatter (for xaml)

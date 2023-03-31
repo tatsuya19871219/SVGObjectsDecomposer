@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,8 @@ public partial class EditableSVGObject : ObservableObject, IDisposable
 
     public SvgDocument SvgDoc {get; private set;} 
 
-    [ObservableProperty] string elementName;
+    [ObservableProperty] string _elementName;
+    [ObservableProperty] RectangleF _bounds;
 
     internal EditableSVGObject(SVGObject svgObject)
     {
