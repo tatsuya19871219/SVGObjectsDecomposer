@@ -11,7 +11,10 @@ namespace SVGObjectsDecomposer;
 public static class BindingHelper
 {
     public static Visibility AsVisibleIfSame(OutputPurpose purpose, OutputPurpose targetPurpose)
-    {
-        return purpose.Equals(targetPurpose) ? Visibility.Visible : Visibility.Collapsed;
-    }
+        => AsVisibleIf( purpose.Equals(targetPurpose) );
+
+
+    public static Visibility AsVisibleIf(bool flag) => flag ? Visibility.Visible : Visibility.Collapsed;
+
+    public static Visibility AsVisibleIfNot(bool flag) => AsVisibleIf(!flag);
 }

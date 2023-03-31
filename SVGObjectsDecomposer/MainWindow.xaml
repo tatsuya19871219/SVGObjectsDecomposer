@@ -101,7 +101,8 @@
                                     <MenuFlyoutItem Text="Generic" Command="{x:Bind DecomposeEditor.SetOutputPurposeCommand}" 
                                                                     CommandParameter="{x:Bind writer:OutputPurpose.Generic}"/>
                                     <MenuFlyoutItem Text="Animation" Command="{x:Bind DecomposeEditor.SetOutputPurposeCommand}"
-                                                                        CommandParameter="{x:Bind writer:OutputPurpose.Animation}"/>
+                                                                        CommandParameter="{x:Bind writer:OutputPurpose.Animation}"
+                                                    IsEnabled="{x:Bind AppState.CanUseInkscape}"/>
                                     <MenuFlyoutItem Text="Position Tracking" Command="{x:Bind DecomposeEditor.SetOutputPurposeCommand}"
                                                                                 CommandParameter="{x:Bind writer:OutputPurpose.PositionTracking}"/>
                                     
@@ -126,6 +127,15 @@
                                    Style="{StaticResource InfoHeaderStyle}"/>
                         <TextBlock Text="{x:Bind DecomposeEditor.OutputBaseDirname, Mode=TwoWay}"
                                    Margin="{StaticResource InfoBodyMargin}"/>
+
+                        <TextBlock Text="Inkscape:"
+                                    Style="{StaticResource InfoHeaderStyle}"/>
+                        <TextBlock Text="⛅ Available"
+                                    Margin="{StaticResource InfoBodyMargin}"
+                                    Visibility="{x:Bind local:BindingHelper.AsVisibleIf(AppState.CanUseInkscape)}"/>
+                        <TextBlock Text="⛄ Not available"
+                                    Margin="{StaticResource InfoBodyMargin}"                                    
+                                    Visibility="{x:Bind local:BindingHelper.AsVisibleIfNot(AppState.CanUseInkscape)}"/>
                     </StackPanel>
                 </ScrollViewer>
 
@@ -141,9 +151,12 @@
                         </Style>
                     </StackPanel.Resources>
                     
-                    <Button Content="Open a SVG file" Click="OpenFileButton_Click"/>
-                    <Button Content="Save SVG parts" Click="SaveButton_Click"/>
-                    <Button Content="Close the SVG file" Click="CloseFileButton_Click"/>
+                    <Button Content="Open a SVG file" Click="OpenFileButton_Click"
+                            IsEnabled="{x:Bind AppState.IsInitialized, Mode=OneWay}"/>
+                    <Button Content="Save SVG parts" Click="SaveButton_Click"
+                            IsEnabled="{x:Bind AppState.IsSVGLoaded, Mode=OneWay}"/>
+                    <Button Content="Close the SVG file" Click="CloseFileButton_Click"
+                            IsEnabled="{x:Bind AppState.IsSVGLoaded, Mode=OneWay}"/>
                 </StackPanel>
 
             </StackPanel>

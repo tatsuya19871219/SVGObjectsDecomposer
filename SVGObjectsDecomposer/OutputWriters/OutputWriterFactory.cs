@@ -23,6 +23,9 @@ namespace SVGObjectsDecomposer.OutputWriters
                 case OutputPurpose.Generic:
                     return new GenericOutputWriter(_container, outputBaseDirname);
                     
+                case OutputPurpose.Animation:
+                    return new CustomOutputWriterForAnimation(_container, outputBaseDirname);
+                    
                 default:
                     throw new Exception("Unknown OutputPurpose is given.");
                     

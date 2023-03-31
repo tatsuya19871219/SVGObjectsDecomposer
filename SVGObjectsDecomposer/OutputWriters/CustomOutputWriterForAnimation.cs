@@ -8,18 +8,11 @@ using SVGObjectsDecomposer.Models;
 
 namespace SVGObjectsDecomposer.OutputWriters
 {
-    class GenericOutputWriter : AbstractOutputWriter
+    internal class CustomOutputWriterForAnimation : AbstractOutputWriter
     {
-        //readonly EditableSVGContainer _container;
-
-        //readonly string _outputBaseDirname;
-        
-        internal GenericOutputWriter(EditableSVGContainer container, string outputBaseDirname)
+        internal CustomOutputWriterForAnimation(EditableSVGContainer container, string outputBaseDirname)
                     : base(container, outputBaseDirname) {}
-        // {
-        //     _container = container;
-        //     _outputBaseDirname = outputBaseDirname;
-        // }
+
         public override void Execute()
         {
             Prepare();
@@ -41,8 +34,6 @@ namespace SVGObjectsDecomposer.OutputWriters
                     obj.SvgDoc.Write(outputFilePath);
                 }
             }
-
         }
-
     }
 }

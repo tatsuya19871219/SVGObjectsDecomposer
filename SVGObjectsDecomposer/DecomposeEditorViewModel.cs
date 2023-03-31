@@ -78,6 +78,8 @@ public partial class DecomposeEditorViewModel : ObservableObject
     {
         IOutputWriter writer = _outputWriterFactory.Create(OutputBaseDirname, OutputPurposeType);
 
+        // show message dialog to notify the output directory is already exist
+
         writer.Execute();
     }
 }

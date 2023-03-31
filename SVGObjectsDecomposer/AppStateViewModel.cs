@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -7,8 +8,10 @@ namespace SVGObjectsDecomposer;
 // App state
 public partial class AppStateViewModel : ObservableObject
 {
-    [ObservableProperty] private bool _isInitialized;
-    [ObservableProperty] private bool _isSVGLoaded;
+    [ObservableProperty] bool _isInitialized;
+    [ObservableProperty] bool _isSVGLoaded;
+
+    [ObservableProperty] bool _canUseInkscape;
 
     // public bool IsInitialized
     // {
@@ -34,6 +37,8 @@ public partial class AppStateViewModel : ObservableObject
     public AppStateViewModel()
     {
         Initialized();
+
+        CheckInkscape();
     }
 
     public void SVGLoaded()
@@ -46,6 +51,27 @@ public partial class AppStateViewModel : ObservableObject
     {
         IsInitialized = true;
         IsSVGLoaded = false;
+    }
+
+    void CheckInkscape()
+    {
+        try
+        {
+            using(Process proc = new Process())
+            {
+                proc.StartInfo.UseShellExecute = false;
+                proc.StartInfo.FileName = "inkscape.exe";
+                proc.StartInfo.Arguments = "--version";
+                proc.Start();
+                proc.WaitForExit();
+            }
+
+            CanUseInkscape = true;
+        }
+        catch
+        {
+            CanUseInkscape = false;
+        }
     }
     
     // // https://learn.microsoft.com/ja-jp/windows/uwp/data-binding/data-binding-in-depth

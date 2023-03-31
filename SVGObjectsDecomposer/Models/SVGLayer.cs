@@ -3,6 +3,8 @@ using Svg;
 
 namespace SVGObjectsDecomposer.Models;
 
+using Helper = InkscapeSVGHelper;
+
 class SVGLayer
 {
     readonly public string LayerName;
@@ -16,6 +18,9 @@ class SVGLayer
         //_layer = layer;
 
         LayerName = layer.ID;
+
+        if ( Helper.TryGetInkscapeLabel(layer, out var inkscapeLabel) )
+            LayerName = inkscapeLabel;
 
         var templeteLayer = SVGLayerTemplete.Extract(layer, out var elements);
 

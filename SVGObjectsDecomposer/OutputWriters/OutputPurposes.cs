@@ -10,12 +10,8 @@ namespace SVGObjectsDecomposer.OutputWriters
     {
         Generic,
         Animation,
-        PositionTracking
+        PositionTracking,
+        InteractiveAnimation
     }
 
-    //// hot fix
-    //public static class OutputPurposeExtension
-    //{
-    //    public static bool Equals(this OutputPurpose p1, OutputPurpose p2) {  return p1.Equals(p2); }
-    //}
 }
