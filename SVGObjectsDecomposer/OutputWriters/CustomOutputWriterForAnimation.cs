@@ -31,6 +31,8 @@ namespace SVGObjectsDecomposer.OutputWriters
 
                     string outputFilePath = $"{outputDirname}/{filename}.svg";
 
+                    // perform trimming if requied (should be awaitable?)
+
                     obj.SvgDoc.Write(outputFilePath);
                 }
             }
