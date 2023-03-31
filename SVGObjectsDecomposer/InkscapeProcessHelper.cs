@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Svg;
 
 namespace SVGObjectsDecomposer;
 
@@ -29,6 +31,40 @@ static class InkscapeProcessHelper
         catch
         {
             return false;
+        }
+    }
+
+    internal static SvgDocument Trim(SvgDocument original)
+    {
+        try
+        {
+            using (Process proc = new Process())
+            {
+                proc.StartInfo.UseShellExecute = false;
+                proc.StartInfo.FileName = s_inkscape;
+                proc.StartInfo.Arguments = "--pipe --export-area-drawing --export-filename=-";
+                proc.StartInfo.RedirectStandardInput = true;
+                proc.StartInfo.RedirectStandardOutput = true;
+
+                proc.Start();
+
+                string textSvgDoc = original.GetXML();
+
+                StreamWriter streamWriter = proc.StandardInput;
+                streamWriter.WriteLine(textSvgDoc);
+                streamWriter.Close();
+
+                StreamReader streamReader = proc.StandardOutput;
+                string output = streamReader.ReadToEnd();
+
+                proc.WaitForExit();
+
+                return SvgDocument.FromSvg<SvgDocument>(output);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
         }
     }
 }
