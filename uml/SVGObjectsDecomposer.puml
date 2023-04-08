@@ -72,8 +72,74 @@ DecomposeEditorViewModel -> OutputWriterFactory
 
 @enduml
 
-@startuml Models
+@startuml Models.SVGContainer
 
+class SVGContainer
+{
+    - baseUri : Uri <<read only>>
+    + Filename : string <<read only>>
+    + ViewBox : SvgViewBox <<read only>>
+    + Layers : List<SVGLayer> <<read only>>
+    ~ SVGContainer(document : SvgDocument)
+    ~ GetBaseUri() : Uri
+}
+
+class SVGLayer
+{
+    + LayerName : string <<read only>>
+    + ID : string <<read only>>
+    + Objects : List<SVGObject> <<read only>>
+    ~ SVGLayer(layer : SvgGroup, templeteDocument : SVGDocumentTemplete)
+}
+
+class SVGObject
+{
+    + SvgDoc : SvgDocument <<get only>>
+    + ID : string <<read only>>
+    + ElementName : string <<get only>>
+    + Bounds : RectangleF <<get only>>
+    + SVGObject(element : SvgElement, layerTemplete : SVGLayerTemplete, docTemplete : SVGDocumentTemplete)
+}
+
+' factories for SVG document creation
+class SVGDocumentTemplete
+{
+    - templete : SvgDocument
+    - SVGDocumentTemplete(document : SvgDocument)
+    {static} ~ Extract(document : SvgDocument, layers : out List<SvgGroup>) : SVGDocumentTemplete
+    - ExtractLayers(layers : out List<SvgGroup>) : void
+    ~ CreateNewDocument() : SvgDocument
+}
+
+class SVGLayerTemplete
+{
+    - templete : SvgGroup
+    - SVGLayerTemplete(group : SvgGroup)
+    {static} ~ Extract(group : SvgGroup, elements : out List<SvgElement>) : SVGLayerTemplete
+    - ExtractElements(elements : out List<SvgElement>) : void
+    ~ CreateNewLayer() : SvgGroup
+}
+
+' Helper class
+class InkscapeSVGHelper << (H, pink) static >>
+{
+    {static} - nsInkscape : XNamespace
+    {static} ~ TryGetInkscapeLabel(element : SvgElement, name : out string) : bool
+}
+
+' arrows
+SVGContainer *-down- SVGLayer
+SVGLayer *-down- SVGObject
+
+SVGContainer -right-> SVGDocumentTemplete
+SVGLayer -right-> SVGLayerTemplete
+
+SVGLayer ..> InkscapeSVGHelper : <use>
+SVGObject .left.> InkscapeSVGHelper : <use>
+
+@enduml
+
+@startuml Models.EditableSVGContainer
 class EditableSVGContainer
 {
     - svgContainer : SVGContainer <<read only>>
@@ -111,79 +177,19 @@ class EditableSVGObject
     + Dispose() : void
 }
 
-class SVGContainer
-{
-    - baseUri : Uri <<read only>>
-    + Filename : string <<read only>>
-    + ViewBox : SvgViewBox <<read only>>
-    + Layers : List<SVGLayer> <<read only>>
-    ~ SVGContainer(document : SvgDocument)
-    ~ GetBaseUri() : Uri
-}
-
-class SVGLayer
-{
-    + LayerName : string <<read only>>
-    + Objects : List<SVGObject> <<read only>>
-    ~ SVGLayer(layer : SvgGroup, templeteDocument : SVGDocumentTemplete)
-}
-
-class SVGObject
-{
-    + SvgDoc : SvgDocument <<get only>>
-    + ElementName : string <<get only>>
-    + Bounds : RectangleF <<get only>>
-    + SVGObject(element : SvgElement, layerTemplete : SVGLayerTemplete, docTemplete : SVGDocumentTemplete)
-}
-
-' factories for SVG document creation
-class SVGDocumentTemplete
-{
-    - templete : SvgDocument
-    - SVGDocumentTemplete(document : SvgDocument)
-    {static} ~ Extract(document : SvgDocument, layers : out List<SvgGroup>) : SVGDocumentTemplete
-    - ExtractLayers(layers : out List<SvgGroup>) : void
-    ~ CreateNewDocument() : SvgDocument
-}
-
-class SVGLayerTemplete
-{
-    - templete : SvgGroup
-    - SVGLayerTemplete(group : SvgGroup)
-    {static} ~ Extract(group : SvgGroup, elements : out List<SvgElement>) : SVGLayerTemplete
-    - ExtractElements(elements : out List<SvgElement>) : void
-    ~ CreateNewLayer() : SvgGroup
-}
-
-' Helper class
-class InkscapeSVGHelper << (H, pink) static >>
-{
-    {static} - nkInkscape : XNamespace
-    {static} ~ TryGetInkscapeLabel(element : SvgElement, name : out string) : bool
-}
-
 ' arrows
-EditableSVGObject -> SVGObject
-EditableSVGLayer -> SVGLayer
-EditableSVGContainer -> SVGContainer
+EditableSVGContainer -right-> SVGContainer
+EditableSVGLayer -right-> SVGLayer
+EditableSVGObject -right-> SVGObject
 
-SVGContainer *-down- SVGLayer
-SVGLayer *-down- SVGObject
-
-EditableSVGContainer *-down- EditableSVGLayer
-EditableSVGLayer *-down- EditableSVGObject
-
-SVGContainer -right-> SVGDocumentTemplete
-SVGLayer -right-> SVGLayerTemplete
-
-SVGLayer ..> InkscapeSVGHelper : <use>
-SVGObject .> InkscapeSVGHelper : <use>
+EditableSVGContainer *-- EditableSVGLayer
+EditableSVGLayer *-- EditableSVGObject
 
 @enduml
 
 @startuml OutputWriters
 
-class InkscapeProcessHelper <<static>>
+class InkscapeProcessHelper << (H, pink) static >>
 {
     {static} - inkscape : string
     {static} ~ CheckInkscapeProcess() : bool
@@ -197,16 +203,16 @@ enum OutputPurpose
     PositionTracking
 }
 
-interface IOutputWriter
-{
-    Execute() : void
-}
+' interface IOutputWriter
+' {
+'     Execute() : void
+' }
 
-abstract AbstractOutputWriter
+abstract OutputWriter
 {
     # container : EditableSVGContainer <<read only>>
     # outputBaseDirname : string <<read only>>
-    ~ AbstractOutputWriter(container : EditableSVGContainer, outputBaseDirname : string)
+    ~ OutputWriter(container : EditableSVGContainer, outputBaseDirname : string)
     {abstract} + Execute() : void
     # Prepare() : void
     - CheckContainer() : void
@@ -241,17 +247,17 @@ class CustomOutputWriterForTracking
 
 
 
-AbstractOutputWriter .up.|> IOutputWriter
+'AbstractOutputWriter .up.|> IOutputWriter
 
-GenericOutputWriter .up.|> AbstractOutputWriter
-CustomOutputWriterForAnimation .up.|> AbstractOutputWriter
-CustomOutputWriterForTracking .up.|> AbstractOutputWriter
+GenericOutputWriter .up.|> OutputWriter
+CustomOutputWriterForAnimation .up.|> OutputWriter
+CustomOutputWriterForTracking .up.|> OutputWriter
 
-OutputWriterFactory .down.> IOutputWriter : <create>
+OutputWriterFactory .down.> OutputWriter : <create>
 
 CustomOutputWriterForAnimation ..> InkscapeProcessHelper : <use>
 CustomOutputWriterForTracking ..> InkscapeProcessHelper : <use>
 
-OutputWriterFactory ..> OutputPurpose : <use>
+OutputWriterFactory .right.> OutputPurpose : <use>
 
 @enduml

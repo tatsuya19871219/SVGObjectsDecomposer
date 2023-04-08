@@ -204,6 +204,7 @@
 
                     </RelativePanel>
 
+                    <Grid>
                     <TextBlock Text="Export SVG images with a same size of the original SVG image for each object."
                                     Style="{StaticResource InfoPurposeDetailsStyle}"
                                     Visibility="{x:Bind local:BindingHelper.AsVisibleIfSame(DecomposeEditor.OutputPurposeType, writer:OutputPurpose.Generic), Mode=OneWay}"/>
@@ -215,7 +216,7 @@
                     <TextBlock Text="Export the original SVG image and path data of each path object as a resource dictionary (xaml)."                                   
                                     Style="{StaticResource InfoPurposeDetailsStyle}"
                                     Visibility="{x:Bind local:BindingHelper.AsVisibleIfSame(DecomposeEditor.OutputPurposeType, writer:OutputPurpose.PositionTracking), Mode=OneWay}"/>
-
+                    </Grid>
                     <RelativePanel>
 
                         <TextBlock x:Name="OutputPathHeader"

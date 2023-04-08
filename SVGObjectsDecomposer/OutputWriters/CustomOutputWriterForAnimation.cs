@@ -32,10 +32,13 @@ namespace SVGObjectsDecomposer.OutputWriters
                     string outputFilePath = $"{outputDirname}/{filename}.svg";
 
                     // perform trimming if requied (should be awaitable?)
+                    var trimmedSvgDoc = InkscapeProcessHelper.Trim(obj.SvgDoc);
 
-                    obj.SvgDoc.Write(outputFilePath);
+                    trimmedSvgDoc.Write(outputFilePath);
                 }
             }
+
+            // write anchor lists of the objects
         }
     }
 }

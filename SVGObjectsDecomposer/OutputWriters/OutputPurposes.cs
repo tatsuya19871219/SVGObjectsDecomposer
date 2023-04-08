@@ -11,7 +11,8 @@ namespace SVGObjectsDecomposer.OutputWriters
         Generic,
         Animation,
         PositionTracking,
-        InteractiveAnimation
+        SimpleClickableShapes,
+        AnimatedClicableShapes
     }
 
 }

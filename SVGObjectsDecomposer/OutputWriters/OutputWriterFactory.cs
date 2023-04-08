@@ -25,7 +25,10 @@ namespace SVGObjectsDecomposer.OutputWriters
                     
                 case OutputPurpose.Animation:
                     return new CustomOutputWriterForAnimation(_container, outputBaseDirname);
-                    
+
+                case OutputPurpose.PositionTracking:    
+                    return new CustomOutputWriterForPositionTracking(_container, outputBaseDirname);
+
                 default:
                     throw new Exception("Unknown OutputPurpose is given.");
                     
