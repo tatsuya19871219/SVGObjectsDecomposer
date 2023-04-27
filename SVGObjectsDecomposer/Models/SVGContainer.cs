@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Svg;
 using SVGObjectsDecomposer.Models;
 
@@ -15,8 +14,6 @@ class SVGContainer
     
     internal SVGContainer(SvgDocument document)
     {
-        //_document = document;
-
         _baseUri = document.BaseUri;
 
         //Filename = _baseUri.Segments.Last();
