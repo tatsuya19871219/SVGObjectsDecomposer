@@ -1,12 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Svg;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SVGObjectsDecomposer.Models;
 
@@ -19,7 +14,6 @@ public partial class EditableSVGContainer : ObservableObject, IDisposable
     [ObservableProperty] SvgViewBox _viewBox;
 
     readonly internal ObservableCollection<EditableSVGLayer> Layers = new();
-    //readonly internal ObservableCollection<EditableSVGObject> Objects = new();
 
     internal EditableSVGContainer(SVGContainer svgContainer)
     {
@@ -37,14 +31,7 @@ public partial class EditableSVGContainer : ObservableObject, IDisposable
         foreach (var layer in _svgContainer.Layers)
            Layers.Add(new EditableSVGLayer(layer));
 
-        //foreach (var svgObject in _svgContainer.SVGObjects)
-        //    Objects.Add(new EditableSVGObject(svgObject));
     }
-
-    // ~EditableSVGContainer()
-    // {
-    //     Filename = null;
-    // }
 
     public void Dispose()
     {
