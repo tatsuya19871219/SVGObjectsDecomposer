@@ -23,6 +23,7 @@ public sealed partial class MainWindow : Window
     // DataContext
     public AppStateViewModel AppState {get; set;} = new();
     public DecomposeEditorViewModel DecomposeEditor { get; set; } = new();
+    public string Message {get; set;} = "Hey";
 
     public MainWindow()
     {
@@ -131,5 +132,10 @@ public sealed partial class MainWindow : Window
         var selectedSVGObject = e.AddedItems[0] as EditableSVGObject;
 
         DecomposeEditor.SelectedSVGObject = selectedSVGObject;
-    }    
+    }
+
+    private void Grid_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+    {
+
+    }
 }

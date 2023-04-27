@@ -12,7 +12,7 @@ public partial class EditableSVGLayer : ObservableObject, IDisposable
     [ObservableProperty] bool _isVisible; // Whether exporting shape or not
     [ObservableProperty] bool _pathExport; // Whether exporting path or not
 
-    readonly internal ObservableCollection<EditableSVGObject> Objects = new();
+    public ObservableCollection<EditableSVGObject> Objects {get; init;} = new();
 
     internal EditableSVGLayer(SVGLayer svgLayer)
     {

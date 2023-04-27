@@ -63,15 +63,18 @@
         <Grid Grid.Column="1" x:Name="EditorView" DataContext="{x:Bind DecomposeEditor}">
 
             <Grid.Resources>
-                <CollectionViewSource x:Name="GroupedSVGObjects" IsSourceGrouped="True"
-                                        Source="{Binding LayeredObjects, Mode=TwoWay}"/>
+                <!-- <CollectionViewSource x:Name="GroupedSVGObjects" IsSourceGrouped="True"
+                                        Source="{Binding LayeredObjects, Mode=TwoWay}"/> -->
+                <CollectionViewSource x:Name="LayeredSVGObjects" IsSourceGrouped="True"
+                                        Source="{Binding EditingSVGContainer.Layers, Mode=OneWay}"
+                                        ItemsPath="Objects"/>
             </Grid.Resources>
 
 
             <GridView x:Name="DecomposedImages"
                         BorderThickness="1"
                         BorderBrush="Black"
-                        ItemsSource="{Binding Source={StaticResource GroupedSVGObjects}}"
+                        ItemsSource="{Binding Source={StaticResource LayeredSVGObjects}}"
                         Margin="30"
                         SelectionChanged="DecomposedImages_SelectionChanged">
 
@@ -93,13 +96,20 @@
                             <DataTemplate>
 
 
-                                <Grid Width="500">
-                                    <TextBlock Text="{Binding Key}" HorizontalAlignment="Left"/>                                    
-
+                                <!--<Grid Width="500" DataContext="{Binding Path=DataContext, ElementName=EditorView}">
+                                    <TextBlock Text="{Binding Message}" HorizontalAlignment="Left"/>
+                                    <TextBlock Text="{Binding Key}" HorizontalAlignment="Center"/>
                                     <ToggleSwitch OffContent="Hide" OnContent="As path" IsOn="False" HorizontalAlignment="Right"/>
+                                </Grid>-->
+
+                                <Grid x:Name="LayerHeader">
+
+                                    <TextBlock Text="{Binding LayerName}" HorizontalAlignment="Center"/>
+
+                                    <ToggleSwitch x:Name="MySwitch" IsOn="{Binding IsVisible, Mode=TwoWay}" HorizontalAlignment="Right"/>
+
                                 </Grid>
-                                
-                                                               
+
                             </DataTemplate>
                         </GroupStyle.HeaderTemplate>
 
@@ -119,6 +129,9 @@
                             <custom:SVGImageView Document="{Binding SvgDoc}"/>
 
                             <TextBlock Text="{Binding ElementName}"/>
+
+                            <!--<TextBlock Text="{Binding Key}"/>-->
+                            <!--<ToggleSwitch x:Name="MySwitch" IsOn="False" HorizontalAlignment="Right"/>-->
                             <!-- <ToggleButton Content="Trim" 
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Top"/> -->

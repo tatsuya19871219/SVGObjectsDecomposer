@@ -13,7 +13,7 @@ public partial class EditableSVGContainer : ObservableObject, IDisposable
     [ObservableProperty] string _filename;
     [ObservableProperty] SvgViewBox _viewBox;
 
-    readonly internal ObservableCollection<EditableSVGLayer> Layers = new();
+    public ObservableCollection<EditableSVGLayer> Layers {get; init;} = new();
 
     internal EditableSVGContainer(SVGContainer svgContainer)
     {

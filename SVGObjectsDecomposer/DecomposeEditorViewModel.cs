@@ -18,6 +18,7 @@ public partial class DecomposeEditorViewModel : ObservableObject
     [ObservableProperty] Dictionary<string, EditableSVGLayer> _layerDict;
     [ObservableProperty] OutputPurpose _outputPurposeType = OutputPurpose.Generic;
     [ObservableProperty] string _outputBaseDirname;
+    [ObservableProperty] string _message;
 
     public ICommand SetOutputPurposeCommand { get; }
 
@@ -26,6 +27,8 @@ public partial class DecomposeEditorViewModel : ObservableObject
     public DecomposeEditorViewModel() 
     {
         SetOutputPurposeCommand = new RelayCommand<OutputPurpose>(SetOutputPurpose);
+
+        Message = "Hoge";
     }
 
     internal void SetNewDocument(SvgDocument document)
@@ -71,7 +74,7 @@ public partial class DecomposeEditorViewModel : ObservableObject
         EditingSVGContainer.Dispose();
         EditingSVGContainer = null;
         LayeredObjects = null;
-        outputBaseDirname = null;
+        OutputBaseDirname = null;
         _outputWriterFactory = null;
     }
 
