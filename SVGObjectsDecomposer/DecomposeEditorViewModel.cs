@@ -4,17 +4,20 @@ using CommunityToolkit.Mvvm.Input;
 using Svg;
 using SVGObjectsDecomposer.Models;
 using SVGObjectsDecomposer.OutputWriters;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace SVGObjectsDecomposer;
 
 public partial class DecomposeEditorViewModel : ObservableObject
 {
-    [ObservableProperty] SvgDocument currentDocument;
-    [ObservableProperty] EditableSVGContainer editingSVGContainer;
-    [ObservableProperty] EditableSVGObject selectedSVGObject;
-    [ObservableProperty] object layeredObjects;
-    [ObservableProperty] OutputPurpose outputPurposeType = OutputPurpose.Generic;
-    [ObservableProperty] string outputBaseDirname;
+    [ObservableProperty] SvgDocument _currentDocument;
+    [ObservableProperty] EditableSVGContainer _editingSVGContainer;
+    [ObservableProperty] EditableSVGObject _selectedSVGObject;
+    [ObservableProperty] object _layeredObjects;
+    [ObservableProperty] Dictionary<string, EditableSVGLayer> _layerDict;
+    [ObservableProperty] OutputPurpose _outputPurposeType = OutputPurpose.Generic;
+    [ObservableProperty] string _outputBaseDirname;
 
     public ICommand SetOutputPurposeCommand { get; }
 
@@ -45,6 +48,12 @@ public partial class DecomposeEditorViewModel : ObservableObject
             group obj by layer.LayerName into g
             orderby g.Key
             select g;
+
+        // Todo : add the references to each editable layer 
+        _layerDict = new();
+
+        foreach(var layer in EditingSVGContainer.Layers)
+            LayerDict.Add(layer.LayerName, layer);
 
         _outputWriterFactory = new OutputWriterFactory(EditingSVGContainer);
 

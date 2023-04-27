@@ -94,7 +94,7 @@
 
 
                                 <Grid Width="500">
-                                    <TextBlock Text="{Binding Key}" HorizontalAlignment="Left"/>
+                                    <TextBlock Text="{Binding Key}" HorizontalAlignment="Left"/>                                    
 
                                     <ToggleSwitch OffContent="Hide" OnContent="As path" IsOn="False" HorizontalAlignment="Right"/>
                                 </Grid>
