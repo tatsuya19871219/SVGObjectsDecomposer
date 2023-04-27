@@ -18,10 +18,11 @@ public class SVGObject
 {
     //readonly SvgDocument _svgDoc;
 
-    public SvgDocument SvgDoc {get; init;}
+    readonly public SvgDocument SvgDoc;
     //public string LayerID {get; init;}
-    public string ElementName {get; init;}
-    public RectangleF Bounds {get; init;}
+    readonly public string ElementName;
+    readonly public bool Visible;
+    readonly public RectangleF Bounds;
 
     public SVGObject(SvgElement element, SVGLayerTemplete layerTemplete, SVGDocumentTemplete docTemplete)
     {
@@ -36,6 +37,13 @@ public class SVGObject
         //LayerID = layer.ID;
 
         ElementName = element.ID;
+
+        //Visible = element.Visibility switch
+        //{
+        //    SvgVisibility.Hidden.ToString() => false,
+        //    SvgVisibility.Inherit.ToString() => layer.Visible,
+        //    _ => true
+        //};
 
         // Overwrite ElementName if inkscape label is available
         if ( Helper.TryGetInkscapeLabel(element, out var inkscapeLabel) )

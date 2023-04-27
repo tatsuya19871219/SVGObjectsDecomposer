@@ -8,6 +8,7 @@ using Helper = InkscapeSVGHelper;
 class SVGLayer
 {
     readonly public string LayerName;
+    readonly public bool Visible;
 
     readonly public List<SVGObject> Objects = new();
 
@@ -18,6 +19,7 @@ class SVGLayer
         //_layer = layer;
 
         LayerName = layer.ID;
+        Visible = layer.Visible;
 
         if ( Helper.TryGetInkscapeLabel(layer, out var inkscapeLabel) )
             LayerName = inkscapeLabel;

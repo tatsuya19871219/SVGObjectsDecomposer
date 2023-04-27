@@ -47,9 +47,9 @@
                         Visibility="{x:Bind AppState.IsInitialized, Mode=OneWay}"/>
 
 
-            <custom:SVGImageView Document="{Binding CurrentDocument}" Opacity="0.5"/>
+            <custom:SVGImageView Document="{x:Bind DecomposeEditor.CurrentDocument, Mode=OneWay}" Opacity="0.5"/>
 
-            <custom:SVGImageView Document="{Binding SelectedSVGObject.SvgDoc}"/>
+            <custom:SVGImageView Document="{x:Bind DecomposeEditor.SelectedSVGObject.SvgDoc, Mode=OneWay}"/>
 
             <!--
                 x:Bind default mode is one time
@@ -60,7 +60,7 @@
         </Grid>
 
 
-        <Grid Grid.Column="1" DataContext="{x:Bind DecomposeEditor}">
+        <Grid Grid.Column="1" x:Name="EditorView" DataContext="{x:Bind DecomposeEditor}">
 
             <Grid.Resources>
                 <CollectionViewSource x:Name="GroupedSVGObjects" IsSourceGrouped="True"
@@ -77,11 +77,29 @@
 
                 <GridView.GroupStyle>
                     <GroupStyle>
+                        <!--<GroupStyle.ContainerStyle>
+                            <Style TargetType="GroupItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="GroupItem">
+                                            <ContentControl HorizontalContentAlignment="Stretch"/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GroupStyle.ContainerStyle>-->
+                        
                         <GroupStyle.HeaderTemplate>
                             <DataTemplate>
 
-                                <TextBlock Text="{Binding Key}"/>
 
+                                <Grid Width="500">
+                                    <TextBlock Text="{Binding Key}" HorizontalAlignment="Left"/>
+
+                                    <ToggleSwitch OffContent="Hide" OnContent="As path" IsOn="False" HorizontalAlignment="Right"/>
+                                </Grid>
+                                
+                                                               
                             </DataTemplate>
                         </GroupStyle.HeaderTemplate>
 
