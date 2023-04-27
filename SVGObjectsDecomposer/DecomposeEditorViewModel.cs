@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.UI.Xaml;
 using Svg;
 using SVGObjectsDecomposer.Models;
 using SVGObjectsDecomposer.OutputWriters;
@@ -15,7 +9,6 @@ namespace SVGObjectsDecomposer;
 
 public partial class DecomposeEditorViewModel : ObservableObject
 {
-    
     [ObservableProperty] SvgDocument currentDocument;
     [ObservableProperty] EditableSVGContainer editingSVGContainer;
     [ObservableProperty] EditableSVGObject selectedSVGObject;

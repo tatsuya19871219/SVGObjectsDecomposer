@@ -33,7 +33,6 @@ public sealed partial class MainWindow : Window
     {
         var svgdoc = OpenSVGFile(file);
 
-        //OriginalSVGImage.Source = Helper.ConvertToBitmapImage(svgdoc);
         DecomposeEditor.SetNewDocument(svgdoc);
 
         AppState.SVGLoaded();
@@ -69,8 +68,6 @@ public sealed partial class MainWindow : Window
 
     private void CloseFileButton_Click(object sender, RoutedEventArgs e)
     {
-        //OriginalSVGImage.Source = null;
-
         DecomposeEditor.ReleaseDocument();
 
         AppState.Initialized();
@@ -108,8 +105,6 @@ public sealed partial class MainWindow : Window
             return;
         }
 
-        //var filepath = Path.GetFileName(items[0].Path);
-
         var file = items[0] as Windows.Storage.StorageFile;
 
         EvokeSVGDecomposerTask(file);
@@ -136,7 +131,5 @@ public sealed partial class MainWindow : Window
         var selectedSVGObject = e.AddedItems[0] as EditableSVGObject;
 
         DecomposeEditor.SelectedSVGObject = selectedSVGObject;
-    }
-
-    
+    }    
 }

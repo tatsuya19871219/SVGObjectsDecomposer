@@ -9,15 +9,10 @@ class SVGLayer
 {
     readonly public string LayerName;
     readonly public bool Visible;
-
     readonly public List<SVGObject> Objects = new();
-
-    //readonly SvgGroup _layer;
 
     internal SVGLayer(SvgGroup layer, SVGDocumentTemplete templeteDocument)
     {
-        //_layer = layer;
-
         LayerName = layer.ID;
         Visible = layer.Visible;
 
