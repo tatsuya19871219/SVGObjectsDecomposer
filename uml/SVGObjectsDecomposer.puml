@@ -152,8 +152,6 @@ class EditableSVGContainer
     ~ EditableSVGContainer(svgContainer : SVGContainer)
     + Dispose() : void
     ' + Resize(width : double, height : double) : void
-    ' '+ TrimAll() : void
-    ' + SaveAll() : void
     ' + GenerateXAMLSample() : void
 }
 
