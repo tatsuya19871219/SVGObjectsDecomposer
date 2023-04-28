@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SVGObjectsDecomposer.Models;
+using Formatter = SVGObjectsDecomposer.Helpers.StringFormatHelper;
 
 namespace SVGObjectsDecomposer.OutputWriters
 {
@@ -26,7 +27,7 @@ namespace SVGObjectsDecomposer.OutputWriters
 
             List<string> positionList = new();
 
-            positionList.Add(string.Format("document viewbox: {0}", _container.ViewBox));
+            positionList.Add(string.Format("document viewbox: {0}", Formatter.ViewBoxFormat(_container.ViewBox)));
 
             foreach (var layer in _container.Layers)
             {
@@ -46,6 +47,8 @@ namespace SVGObjectsDecomposer.OutputWriters
                     string outputFilePath = $"{outputDirname}/{filename}.svg";
 
                     obj.SvgDoc.Write(outputFilePath);
+
+                    positionList.Add(string.Format("{0}: {1}", filename, Formatter.BoundsFormat(obj.Bounds)));
                 }
             }
 

@@ -28,7 +28,7 @@ namespace SVGObjectsDecomposer.OutputWriters
             // this flow will be modified to allow overwrite the output
             if (!Directory.Exists(_outputBaseDirname)) 
                     Directory.CreateDirectory(_outputBaseDirname);
-            else throw new Exception("Output directory is already exists.");
+            //else throw new Exception("Output directory is already exists.");
 
         }
         void CheckContainer()
