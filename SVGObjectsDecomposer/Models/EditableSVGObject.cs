@@ -9,9 +9,10 @@ public partial class EditableSVGObject : ObservableObject, IDisposable
 {
     readonly SVGObject _svgObject;
 
-    public SvgDocument SvgDoc {get; private set;} 
+    //public SvgDocument SvgDoc {get; private set;} 
+    [ObservableProperty] SvgDocument _svgDoc;
 
-    [ObservableProperty] string _elementName;
+    [ObservableProperty] string _objectName;
     [ObservableProperty] RectangleF _bounds;
 
     internal EditableSVGObject(SVGObject svgObject)
@@ -21,11 +22,12 @@ public partial class EditableSVGObject : ObservableObject, IDisposable
         SvgDoc = _svgObject.SvgDoc;
 
         // Set initial values of observable properties
-        ElementName = _svgObject.ElementName;
+        ObjectName = _svgObject.ObjectName;
     }
 
     public void Dispose()
     {
-        ElementName = null;
+        ObjectName = null;
+        SvgDoc = null;
     }
 }

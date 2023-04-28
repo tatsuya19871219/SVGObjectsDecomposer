@@ -14,11 +14,11 @@ public partial class DecomposeEditorViewModel : ObservableObject
     [ObservableProperty] SvgDocument _currentDocument;
     [ObservableProperty] EditableSVGContainer _editingSVGContainer;
     [ObservableProperty] EditableSVGObject _selectedSVGObject;
-    [ObservableProperty] object _layeredObjects;
-    [ObservableProperty] Dictionary<string, EditableSVGLayer> _layerDict;
+    // [ObservableProperty] object _layeredObjects;
+    // [ObservableProperty] Dictionary<string, EditableSVGLayer> _layerDict;
     [ObservableProperty] OutputPurpose _outputPurposeType = OutputPurpose.Generic;
     [ObservableProperty] string _outputBaseDirname;
-    [ObservableProperty] string _message;
+    // [ObservableProperty] string _message;
 
     public ICommand SetOutputPurposeCommand { get; }
 
@@ -28,7 +28,7 @@ public partial class DecomposeEditorViewModel : ObservableObject
     {
         SetOutputPurposeCommand = new RelayCommand<OutputPurpose>(SetOutputPurpose);
 
-        Message = "Hoge";
+        // Message = "Hoge";
     }
 
     internal void SetNewDocument(SvgDocument document)
@@ -45,18 +45,18 @@ public partial class DecomposeEditorViewModel : ObservableObject
         //     orderby g.Key
         //     select g;
 
-        LayeredObjects = 
-            from layer in EditingSVGContainer.Layers
-            from obj in layer.Objects
-            group obj by layer.LayerName into g
-            orderby g.Key
-            select g;
+        // LayeredObjects = 
+        //     from layer in EditingSVGContainer.Layers
+        //     from obj in layer.Objects
+        //     group obj by layer.LayerName into g
+        //     orderby g.Key
+        //     select g;
 
-        // Todo : add the references to each editable layer 
-        _layerDict = new();
+        // // Todo : add the references to each editable layer 
+        // _layerDict = new();
 
-        foreach(var layer in EditingSVGContainer.Layers)
-            LayerDict.Add(layer.LayerName, layer);
+        // foreach(var layer in EditingSVGContainer.Layers)
+        //     LayerDict.Add(layer.LayerName, layer);
 
         _outputWriterFactory = new OutputWriterFactory(EditingSVGContainer);
 
@@ -70,10 +70,12 @@ public partial class DecomposeEditorViewModel : ObservableObject
 
     internal void ReleaseDocument()
     {
+        SelectedSVGObject.Dispose();
+        SelectedSVGObject = null;
         CurrentDocument = null;
         EditingSVGContainer.Dispose();
         EditingSVGContainer = null;
-        LayeredObjects = null;
+        // LayeredObjects = null;
         OutputBaseDirname = null;
         _outputWriterFactory = null;
     }

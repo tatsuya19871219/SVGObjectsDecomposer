@@ -17,6 +17,12 @@
     mc:Ignorable="d">
 
     <Grid>
+
+        <Grid.Resources>
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <converters:BoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible"/>
+        </Grid.Resources>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
@@ -25,10 +31,6 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-
-        <!--<StackPanel Orientation="Vertical"
-                    Grid.Column="0"
-                    DataContext="{x:Bind DecomposeEditor}">-->
 
         <Grid BorderBrush="Black" BorderThickness="2"
                     AllowDrop="True"
@@ -47,24 +49,20 @@
                         Visibility="{x:Bind AppState.IsInitialized, Mode=OneWay}"/>
 
 
-            <custom:SVGImageView Document="{x:Bind DecomposeEditor.CurrentDocument, Mode=OneWay}" Opacity="0.5"/>
+            <custom:SVGImageView Document="{x:Bind DecomposeEditor.CurrentDocument, Mode=OneWay}" Opacity="0.2"/>
 
-            <custom:SVGImageView Document="{x:Bind DecomposeEditor.SelectedSVGObject.SvgDoc, Mode=OneWay}"/>
+            <custom:SVGImageView Document="{x:Bind DecomposeEditor.SelectedSVGObject.SvgDoc, Mode=OneWay}" Opacity="1"/>
 
-            <!--
+            <!-- Comment:
                 x:Bind default mode is one time
                     https://stackoverflow.com/questions/72034501/binding-not-updating-winui-3
-                -->
-            <!--<ToggleSwitch IsOn="{x:Bind Path=AppState.IsSVGLoaded, Mode=OneWay}"/>-->
-
+            -->
         </Grid>
 
 
         <Grid Grid.Column="1" x:Name="EditorView" DataContext="{x:Bind DecomposeEditor}">
 
-            <Grid.Resources>
-                <!-- <CollectionViewSource x:Name="GroupedSVGObjects" IsSourceGrouped="True"
-                                        Source="{Binding LayeredObjects, Mode=TwoWay}"/> -->
+            <Grid.Resources>                
                 <CollectionViewSource x:Name="LayeredSVGObjects" IsSourceGrouped="True"
                                         Source="{Binding EditingSVGContainer.Layers, Mode=OneWay}"
                                         ItemsPath="Objects"/>
@@ -77,6 +75,8 @@
                         ItemsSource="{Binding Source={StaticResource LayeredSVGObjects}}"
                         Margin="30"
                         SelectionChanged="DecomposedImages_SelectionChanged">
+
+                
 
                 <GridView.GroupStyle>
                     <GroupStyle>
@@ -94,21 +94,21 @@
                         
                         <GroupStyle.HeaderTemplate>
                             <DataTemplate>
+                                <StackPanel x:Name="LayerHeader" Orientation="Horizontal" Spacing="30"
+                                            VerticalAlignment="Center">                                            
 
+                                    <TextBlock Text="{Binding LayerName}" HorizontalAlignment="Center"/>                                    
+                                    
+                                    <ToggleSwitch IsOn="{Binding PathExport, Mode=TwoWay}"
+                                                    Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                    OffContent="Export object only"
+                                                    OnContent="Export object with path data"/>
+                                    <ToggleSwitch IsOn="{Binding PathExport, Mode=TwoWay}"
+                                                    Visibility="{Binding IsVisible, Converter={StaticResource InverseBoolToVisibilityConverter}}"
+                                                    OffContent="Export empty"
+                                                    OnContent="Export as path data"/>
 
-                                <!--<Grid Width="500" DataContext="{Binding Path=DataContext, ElementName=EditorView}">
-                                    <TextBlock Text="{Binding Message}" HorizontalAlignment="Left"/>
-                                    <TextBlock Text="{Binding Key}" HorizontalAlignment="Center"/>
-                                    <ToggleSwitch OffContent="Hide" OnContent="As path" IsOn="False" HorizontalAlignment="Right"/>
-                                </Grid>-->
-
-                                <Grid x:Name="LayerHeader">
-
-                                    <TextBlock Text="{Binding LayerName}" HorizontalAlignment="Center"/>
-
-                                    <ToggleSwitch x:Name="MySwitch" IsOn="{Binding IsVisible, Mode=TwoWay}" HorizontalAlignment="Right"/>
-
-                                </Grid>
+                                </StackPanel>
 
                             </DataTemplate>
                         </GroupStyle.HeaderTemplate>
@@ -125,16 +125,9 @@
                                 <brushes:TilesBrush TextureUri="/Assets/TileBase.png"/>
                             </Grid.Background>
 
-                            <!-- <Image Source="{x:Bind local:ValueConverterHelper.ConvertToBitmapImage(SvgDoc)}"/> -->
                             <custom:SVGImageView Document="{Binding SvgDoc}"/>
 
-                            <TextBlock Text="{Binding ElementName}"/>
-
-                            <!--<TextBlock Text="{Binding Key}"/>-->
-                            <!--<ToggleSwitch x:Name="MySwitch" IsOn="False" HorizontalAlignment="Right"/>-->
-                            <!-- <ToggleButton Content="Trim" 
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Top"/> -->
+                            <TextBlock Text="{Binding ObjectName}" Margin="10"/>                    
 
                         </Grid>
                     </DataTemplate>
@@ -207,7 +200,7 @@
 
                     </RelativePanel>
 
-                    <RelativePanel>
+                    <!-- <RelativePanel>
 
                         <TextBlock x:Name="OutputPurposeHeader"
                                 Text="Purpose:"
@@ -233,9 +226,9 @@
                             </DropDownButton.Flyout>
                         </DropDownButton>
 
-                    </RelativePanel>
+                    </RelativePanel> -->
 
-                    <Grid>
+                    <!-- <Grid>
                     <TextBlock Text="Export SVG images with a same size of the original SVG image for each object."
                                     Style="{StaticResource InfoPurposeDetailsStyle}"
                                     Visibility="{x:Bind local:BindingHelper.AsVisibleIfSame(DecomposeEditor.OutputPurposeType, writer:OutputPurpose.Generic), Mode=OneWay}"/>
@@ -247,7 +240,7 @@
                     <TextBlock Text="Export the original SVG image and path data of each path object as a resource dictionary (xaml)."                                   
                                     Style="{StaticResource InfoPurposeDetailsStyle}"
                                     Visibility="{x:Bind local:BindingHelper.AsVisibleIfSame(DecomposeEditor.OutputPurposeType, writer:OutputPurpose.PositionTracking), Mode=OneWay}"/>
-                    </Grid>
+                    </Grid> -->
                     <RelativePanel>
 
                         <TextBlock x:Name="OutputPathHeader"

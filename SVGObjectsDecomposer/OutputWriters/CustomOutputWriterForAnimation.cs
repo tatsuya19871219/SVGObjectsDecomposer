@@ -27,7 +27,7 @@ namespace SVGObjectsDecomposer.OutputWriters
 
                 foreach (var obj in layer.Objects)
                 {
-                    string filename = obj.ElementName.ToLower();
+                    string filename = obj.ObjectName.ToLower();
 
                     string outputFilePath = $"{outputDirname}/{filename}.svg";
 

@@ -20,7 +20,7 @@ public partial class EditableSVGLayer : ObservableObject, IDisposable
 
         // Set ititial values of observable properties
         LayerName = _svgLayer.LayerName;
-        IsVisible = _svgLayer.Visible;
+        IsVisible = _svgLayer.IsVisible;
         PathExport = false;
 
         foreach (var obj in _svgLayer.Objects)

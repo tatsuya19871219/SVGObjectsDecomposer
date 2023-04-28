@@ -8,8 +8,8 @@ using Helper = InkscapeSVGHelper;
 public class SVGObject
 {
     readonly public SvgDocument SvgDoc;
-    readonly public string ElementName;
-    readonly public bool Visible;
+    readonly public string ObjectName;
+    readonly public bool IsVisible;
     readonly public RectangleF Bounds;
 
     public SVGObject(SvgElement element, SVGLayerTemplete layerTemplete, SVGDocumentTemplete docTemplete)
@@ -22,7 +22,9 @@ public class SVGObject
 
         SvgDoc = document;        
 
-        ElementName = element.ID;
+        ObjectName = element.ID;
+
+        IsVisible = element.Display == "none" ? false : true;
 
         //Visible = element.Visibility switch
         //{
@@ -33,7 +35,7 @@ public class SVGObject
 
         // Overwrite ElementName if inkscape label is available
         if ( Helper.TryGetInkscapeLabel(element, out var inkscapeLabel) )
-            ElementName = inkscapeLabel;
+            ObjectName = inkscapeLabel;
 
         Bounds = document.Bounds;
 

@@ -8,13 +8,13 @@ using Helper = InkscapeSVGHelper;
 class SVGLayer
 {
     readonly public string LayerName;
-    readonly public bool Visible;
+    readonly public bool IsVisible;
     readonly public List<SVGObject> Objects = new();
 
     internal SVGLayer(SvgGroup layer, SVGDocumentTemplete templeteDocument)
     {
         LayerName = layer.ID;
-        Visible = layer.Visible;
+        IsVisible = layer.Display == "none" ? false : true;
 
         if ( Helper.TryGetInkscapeLabel(layer, out var inkscapeLabel) )
             LayerName = inkscapeLabel;

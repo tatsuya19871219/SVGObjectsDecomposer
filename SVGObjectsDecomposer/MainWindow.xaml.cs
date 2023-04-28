@@ -134,8 +134,8 @@ public sealed partial class MainWindow : Window
         DecomposeEditor.SelectedSVGObject = selectedSVGObject;
     }
 
-    private void Grid_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
-    {
+    //private void Grid_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+    //{
 
-    }
+    //}
 }
