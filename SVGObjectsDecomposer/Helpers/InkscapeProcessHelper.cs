@@ -73,7 +73,7 @@ static class InkscapeProcessHelper
     // inkscape --select=path1262 --actions="object-to-path" --export-filename=bbb.svg .\aaa.svg
     // it also works for layer-wise:
     // inkscape --select=layer1 --actions="object-to-path" --export-filename=hoge.svg .\TileBase.svg
-    internal static SvgDocument ObjectToPath(SvgDocument original, string layerID)
+    internal static SvgDocument ObjectToPath(SvgDocument original, string ID)
     {
         try 
         {
@@ -81,7 +81,7 @@ static class InkscapeProcessHelper
             {
                 proc.StartInfo.UseShellExecute = false;
                 proc.StartInfo.FileName = s_inkscape;
-                proc.StartInfo.Arguments = $"--pipe --select={layerID} --actions=\"object-to-path\" --export-filename=-";
+                proc.StartInfo.Arguments = $"--pipe --select={ID} --actions=\"object-to-path\" --export-filename=-";
                 proc.StartInfo.RedirectStandardInput = true;
                 proc.StartInfo.RedirectStandardOutput = true;
 

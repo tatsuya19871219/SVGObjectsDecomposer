@@ -194,6 +194,7 @@ class InkscapeProcessHelper << (H, pink) static >>
     {static} - inkscape : string
     {static} ~ CheckInkscapeProcess() : bool
     {static} ~ Trim(original : SvgDocument) : SvgDocument
+    {static} ~ ObjectToPath(original : SvgDocument, ID : string) : SvgDocument
 }
 
 enum OutputPurpose
@@ -203,19 +204,21 @@ enum OutputPurpose
     PositionTracking
 }
 
-' interface IOutputWriter
-' {
-'     Execute() : void
-' }
+interface IOutputWriter
+{
+    Execute() : void
+}
 
-abstract OutputWriter
+abstract AbstractOutputWriter
 {
     # container : EditableSVGContainer <<read only>>
     # outputBaseDirname : string <<read only>>
-    ~ OutputWriter(container : EditableSVGContainer, outputBaseDirname : string)
+    ~ AbstractOutputWriter(container : EditableSVGContainer, outputBaseDirname : string)
     {abstract} + Execute() : void
     # Prepare() : void
     - CheckContainer() : void
+    # WriteStringList(filename : string, contents : List<string>) : void
+    # WriteSvgDoc(filename : string, dirname : string, svgdoc : SvgDocument) : void
 
 }
 
@@ -233,30 +236,31 @@ class GenericOutputWriter
     ' + Execute() : void
 }
 
-class CustomOutputWriterForAnimation
-{
-    ' ~ CustomOutputWriterForAnimation(container : EditableSVGContainer, outputBaseDirname : string)
-    ' + Execute() : void
-}
+' class CustomOutputWriterForAnimation
+' {
+'     ' ~ CustomOutputWriterForAnimation(container : EditableSVGContainer, outputBaseDirname : string)
+'     ' + Execute() : void
+' }
 
-class CustomOutputWriterForTracking
-{
-    ' ~ CustomOutputWriterForTracking(container : EditableSVGContainer, outputBaseDirname : string)
-    ' + Execute() : void
-}
+' class CustomOutputWriterForTracking
+' {
+'     ' ~ CustomOutputWriterForTracking(container : EditableSVGContainer, outputBaseDirname : string)
+'     ' + Execute() : void
+' }
 
 
 
-'AbstractOutputWriter .up.|> IOutputWriter
+AbstractOutputWriter .up.|> IOutputWriter
 
-GenericOutputWriter .up.|> OutputWriter
-CustomOutputWriterForAnimation .up.|> OutputWriter
-CustomOutputWriterForTracking .up.|> OutputWriter
+GenericOutputWriter .up.|> AbstractOutputWriter
+' CustomOutputWriterForAnimation .up.|> OutputWriter
+' CustomOutputWriterForTracking .up.|> OutputWriter
 
-OutputWriterFactory .down.> OutputWriter : <create>
+OutputWriterFactory .down.> IOutputWriter : <create>
 
-CustomOutputWriterForAnimation ..> InkscapeProcessHelper : <use>
-CustomOutputWriterForTracking ..> InkscapeProcessHelper : <use>
+GenericOutputWriter ..> InkscapeProcessHelper : <use>
+' CustomOutputWriterForAnimation ..> InkscapeProcessHelper : <use>
+' CustomOutputWriterForTracking ..> InkscapeProcessHelper : <use>
 
 OutputWriterFactory .right.> OutputPurpose : <use>
 

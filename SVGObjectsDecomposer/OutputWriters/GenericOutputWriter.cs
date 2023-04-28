@@ -12,17 +12,10 @@ using Formatter = SVGObjectsDecomposer.Helpers.StringFormatHelper;
 namespace SVGObjectsDecomposer.OutputWriters
 {
     class GenericOutputWriter : AbstractOutputWriter
-    {
-        //readonly EditableSVGContainer _container;
-
-        //readonly string _outputBaseDirname;
-        
+    {       
         internal GenericOutputWriter(EditableSVGContainer container, string outputBaseDirname)
                     : base(container, outputBaseDirname) {}
-        // {
-        //     _container = container;
-        //     _outputBaseDirname = outputBaseDirname;
-        // }
+        
         public override void Execute()
         {
             Prepare();
@@ -38,10 +31,6 @@ namespace SVGObjectsDecomposer.OutputWriters
             {
                 string layerName = layer.LayerName;
 
-                // string outputDirname = $"{_outputBaseDirname}/{layerName}";
-
-                // if (!Directory.Exists(outputDirname)) Directory.CreateDirectory(outputDirname);
-
                 bool shapeExport = layer.IsVisible;
                 bool pathExport = layer.PathExport;
 
@@ -49,16 +38,10 @@ namespace SVGObjectsDecomposer.OutputWriters
                 {
                     string filename = obj.ObjectName.ToLower() + ".svg";
 
-                    //string outputFilePath = $"{outputDirname}/{filename}.svg";
-
-                    //obj.SvgDoc.Write(outputFilePath);
-
                     if(shapeExport)
                     {
                         // perform trimming if requied (should be awaitable?)
                         var trimmedSvgDoc = InkscapeProcessHelper.Trim(obj.SvgDoc);
-
-                        //trimmedSvgDoc.Write(outputFilePath);
 
                         WriteSvgDoc(filename, layerName, trimmedSvgDoc);
 
