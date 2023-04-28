@@ -24,6 +24,10 @@ namespace SVGObjectsDecomposer.OutputWriters
         {
             Prepare();
 
+            List<string> positionList = new();
+
+            positionList.Add(string.Format("document viewbox: {0}", _container.ViewBox));
+
             foreach (var layer in _container.Layers)
             {
                 string layerName = layer.LayerName;
@@ -31,6 +35,9 @@ namespace SVGObjectsDecomposer.OutputWriters
                 string outputDirname = $"{_outputBaseDirname}/{layerName}";
 
                 if (!Directory.Exists(outputDirname)) Directory.CreateDirectory(outputDirname);
+
+                bool shapeExport = layer.IsVisible;
+                bool pathExport = layer.PathExport;
 
                 foreach (var obj in layer.Objects)
                 {
@@ -42,6 +49,10 @@ namespace SVGObjectsDecomposer.OutputWriters
                 }
             }
 
+            // Output path data
+            //StreamWriter streamWriter = new StreamWriter($"{_outputBaseDirname}/posisionList.txt", false, Encoding.UTF8);
+
+            //streamWriter.WriteLine(string.Format("document viewbox: {0}", _container.ViewBox.ToString()));
         }
 
     }

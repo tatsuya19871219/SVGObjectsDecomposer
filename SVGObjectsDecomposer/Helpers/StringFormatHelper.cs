@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SVGObjectsDecomposer.OutputWriters;
+namespace SVGObjectsDecomposer.Helpers;
 
-interface IOutputWriter
+class StringFormatHelper
 {
-    void Execute();
 }
