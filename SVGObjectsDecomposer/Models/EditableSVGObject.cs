@@ -27,6 +27,7 @@ public partial class EditableSVGObject : ObservableObject, IDisposable
 
         // Set initial values of observable properties
         ObjectName = _svgObject.ObjectName;
+        Bounds = _svgObject.Bounds;
     }
 
     public void Dispose()
