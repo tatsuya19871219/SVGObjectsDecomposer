@@ -1,4 +1,5 @@
 ﻿using Svg;
+using System;
 using System.Drawing;
 
 namespace SVGObjectsDecomposer.Models;
@@ -22,12 +23,12 @@ public class SVGObject
         layer.Children.Add(element.DeepCopy());
         document.Children.Add(layer);
 
-        SvgDoc = document;        
+        SvgDoc = document;
 
         ID = element.ID;
-        
+
         // Overwrite ElementName if inkscape label is available
-        if ( Helper.TryGetInkscapeLabel(element, out var inkscapeLabel) )
+        if (Helper.TryGetInkscapeLabel(element, out var inkscapeLabel))
             ObjectName = inkscapeLabel;
         else
             ObjectName = ID;
@@ -36,7 +37,17 @@ public class SVGObject
 
         IsPath = element is Svg.SvgPath ? true : false;
 
-        Bounds = document.Bounds;
+        if ( element.TryGetAttribute("x", out var x) &&
+             element.TryGetAttribute("y", out var y) &&
+             element.TryGetAttribute("width", out var width) &&
+             element.TryGetAttribute("height", out var height) )
+        {
+            Bounds = new RectangleF(Single.Parse(x), Single.Parse(y), Single.Parse(width), Single.Parse(height));
+        }
+        else
+        {
+            Bounds = document.Bounds;
+        }
 
     }
 }

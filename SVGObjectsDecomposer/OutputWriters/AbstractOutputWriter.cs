@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Svg;
 using SVGObjectsDecomposer.Models;
 
 namespace SVGObjectsDecomposer.OutputWriters
@@ -37,7 +38,30 @@ namespace SVGObjectsDecomposer.OutputWriters
             if (_container.Filename is null) throw new Exception("The instance is already disposed");
         }
 
-        // // Helper method for directory name strings
-        // protected
+        protected void WriteStringList(string filename, List<string> contents)
+        {
+            try
+            {
+                StreamWriter streamWriter = new StreamWriter($"{_outputBaseDirname}/{filename}", false, Encoding.UTF8);
+
+                foreach(var line in contents)
+                    streamWriter.WriteLine(line);
+
+                streamWriter.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+            }
+        }
+
+        protected void WriteSvgDoc(string filename, string dirname, SvgDocument svgdoc)        
+        {
+            string outputDirname = $"{_outputBaseDirname}/{dirname}";
+
+            if (!Directory.Exists(outputDirname)) Directory.CreateDirectory(outputDirname);
+
+            svgdoc.Write($"{outputDirname}/{filename}");
+        }
     }
 }
