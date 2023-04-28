@@ -7,7 +7,7 @@ using SVGObjectsDecomposer.OutputWriters;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace SVGObjectsDecomposer;
+namespace SVGObjectsDecomposer.ViewModels;
 
 public partial class DecomposeEditorViewModel : ObservableObject
 {

@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Svg;
 using SVGObjectsDecomposer.Models;
+using SVGObjectsDecomposer.ViewModels;
 using System;
 using System.IO;
 using System.Threading.Tasks;

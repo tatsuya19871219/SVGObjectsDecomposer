@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace SVGObjectsDecomposer.Models;
 
-using Helper = InkscapeSVGHelper;
+using Helper = Helpers.InkscapeSVGHelper;
 
 public class SVGObject
 {

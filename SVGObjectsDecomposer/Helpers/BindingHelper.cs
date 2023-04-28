@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using SVGObjectsDecomposer.OutputWriters;
 
-namespace SVGObjectsDecomposer;
+namespace SVGObjectsDecomposer.Helpers;
 
 public static class BindingHelper
 {

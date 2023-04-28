@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Svg;
 
-namespace SVGObjectsDecomposer;
+namespace SVGObjectsDecomposer.Helpers;
 
 static class InkscapeProcessHelper
 {

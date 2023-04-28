@@ -6,6 +6,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:SVGObjectsDecomposer"
+    xmlns:helper="using:SVGObjectsDecomposer.Helpers"
     xmlns:models="using:SVGObjectsDecomposer.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -102,7 +103,7 @@
 
                                     <TextBlock Text="{x:Bind LayerName}"/>
 
-                                    <TextBlock Text="(Invisible)" Visibility="{x:Bind local:BindingHelper.AsVisibleIfNot(IsVisible)}"/>
+                                    <TextBlock Text="(Invisible)" Visibility="{x:Bind helper:BindingHelper.AsVisibleIfNot(IsVisible)}"/>
                                     
                                     <ToggleSwitch IsOn="{Binding PathExport, Mode=TwoWay}"
                                                     Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
@@ -264,12 +265,12 @@
                                     Style="{StaticResource InfoHeaderStyle}"/>
                         <TextBlock Text="⛅ Available"
                                     Margin="{StaticResource InfoBodyMargin}"
-                                    Visibility="{x:Bind local:BindingHelper.AsVisibleIf(AppState.CanUseInkscape)}"
+                                    Visibility="{x:Bind helper:BindingHelper.AsVisibleIf(AppState.CanUseInkscape)}"
                                     RelativePanel.RightOf="InkscapeStatusHeader"
                                     RelativePanel.AlignVerticalCenterWithPanel="True"/>
                         <TextBlock Text="⛄ Not available"
                                     Margin="{StaticResource InfoBodyMargin}"                                    
-                                    Visibility="{x:Bind local:BindingHelper.AsVisibleIfNot(AppState.CanUseInkscape)}"
+                                    Visibility="{x:Bind helper:BindingHelper.AsVisibleIfNot(AppState.CanUseInkscape)}"
                                     RelativePanel.RightOf="InkscapeStatusHeader"
                                     RelativePanel.AlignVerticalCenterWithPanel="True"/>
                     </RelativePanel>

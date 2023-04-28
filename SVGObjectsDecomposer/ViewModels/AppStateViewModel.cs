@@ -2,8 +2,9 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.ComponentModel;
+using SVGObjectsDecomposer.Helpers;
 
-namespace SVGObjectsDecomposer;
+namespace SVGObjectsDecomposer.ViewModels;
 
 // App state
 public partial class AppStateViewModel : ObservableObject

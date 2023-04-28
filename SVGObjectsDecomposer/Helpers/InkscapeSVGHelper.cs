@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Svg;
 
-namespace SVGObjectsDecomposer.Models;
+namespace SVGObjectsDecomposer.Helpers;
 
 static class InkscapeSVGHelper
 {
