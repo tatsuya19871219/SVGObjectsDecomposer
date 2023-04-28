@@ -8,6 +8,8 @@ public partial class EditableSVGLayer : ObservableObject, IDisposable
 {
     readonly SVGLayer _svgLayer;
 
+    public string ID => _svgLayer.ID;
+
     [ObservableProperty] string _layerName;
     [ObservableProperty] bool _isVisible; // Whether exporting shape or not
     [ObservableProperty] bool _pathExport; // Whether exporting path or not

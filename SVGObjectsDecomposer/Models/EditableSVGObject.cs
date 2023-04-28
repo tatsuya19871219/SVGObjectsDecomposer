@@ -10,7 +10,7 @@ public partial class EditableSVGObject : ObservableObject, IDisposable
     readonly SVGObject _svgObject;
 
     //public SvgDocument SvgDoc {get; private set;} 
-
+    public string ID => _svgObject.ID;
     public bool IsVisible => _svgObject.IsVisible;
     public bool IsPath => _svgObject.IsPath;
 
