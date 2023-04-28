@@ -10,6 +10,7 @@ public class SVGObject
     readonly public SvgDocument SvgDoc;
     readonly public string ObjectName;
     readonly public bool IsVisible;
+    readonly public bool IsPath;
     readonly public RectangleF Bounds;
 
     public SVGObject(SvgElement element, SVGLayerTemplete layerTemplete, SVGDocumentTemplete docTemplete)
@@ -26,13 +27,8 @@ public class SVGObject
 
         IsVisible = element.Display == "none" ? false : true;
 
-        //Visible = element.Visibility switch
-        //{
-        //    SvgVisibility.Hidden.ToString() => false,
-        //    SvgVisibility.Inherit.ToString() => layer.Visible,
-        //    _ => true
-        //};
-
+        IsPath = element is Svg.SvgPath ? true : false;
+        
         // Overwrite ElementName if inkscape label is available
         if ( Helper.TryGetInkscapeLabel(element, out var inkscapeLabel) )
             ObjectName = inkscapeLabel;
