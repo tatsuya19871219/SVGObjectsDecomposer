@@ -40,36 +40,3 @@ public partial class EditableSVGContainer : ObservableObject, IDisposable
         Layers.Clear();
     }
 
-    // internal void SaveAll()
-    // {
-    //     // After the instance is disposed, throw the exception
-    //     if (Filename is null) throw new Exception("The instance is already disposed");
-
-    //     string originalDirname = Path.GetDirectoryName(OriginalFilePath);
-    //     string originalFileBasename = Path.GetFileNameWithoutExtension(OriginalFilePath);
-
-    //     // for test
-    //     string outputBaseDirname = $"{originalDirname}/output_{originalFileBasename}";
-
-    //     if (!Directory.Exists(outputBaseDirname)) Directory.CreateDirectory(outputBaseDirname);
-
-    //     foreach (var layer in Layers)
-    //     {
-    //         string layerName = layer.LayerName;
-
-    //         string outputDirname = $"{outputBaseDirname}/{layerName}";
-
-    //         if (!Directory.Exists(outputDirname)) Directory.CreateDirectory(outputDirname);
-
-    //         foreach (var obj in layer.Objects)
-    //         {
-    //             string filename = obj.ElementName.ToLower();
-
-    //             string outputFilePath = $"{outputDirname}/{filename}.svg";
-
-    //             obj.SvgDoc.Write(outputFilePath);
-    //         }
-    //     }
-    // }
-}
-

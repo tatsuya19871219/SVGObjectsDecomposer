@@ -148,7 +148,7 @@ class EditableSVGContainer
     + OriginalFilePath : string <<observable property>>
     + Filename : string <<observable property>>
     + ViewBox : SvgViewBox <<observable property>>
-    ~ Layers : ObservableCollection<EditableSVGLayer> <<read only>>
+    + Layers : ObservableCollection<EditableSVGLayer> 
     ~ EditableSVGContainer(svgContainer : SVGContainer)
     + Dispose() : void
     ' + Resize(width : double, height : double) : void
@@ -160,22 +160,25 @@ class EditableSVGContainer
 class EditableSVGLayer
 {
     - svgLayer : SVGLayer <<read only>>
+    + ID : string 
     + LayerName : string <<observable property>>
-    ~ Objects : ObservableCollection<EditableSVGObject> <<read only>>
+    + IsVisible : bool <<observable property>>
+    + PathExport : bool <<observable property>>
+    + Objects : ObservableCollection<EditableSVGObject>
     ~ EditableLayer(svgLayer : SVGLayer)
     + Dispose() : void
 }
 
 class EditableSVGObject
 {
-    - svgObject : SVGObject
-    '- trimmed : SVGObject
-    + SvgDoc : SvgDocument <<get only>>
-    + ElementName : string <<observable property>>
+    - svgObject : SVGObject <<read only>>
+    + ID : string
+    + IsVisible : bool
+    + IsPath : bool
+    + SvgDoc : SvgDocument <<observable property>>
+    + ObjectName : string <<observable property>>
     + Bounds : RectangleF <<observable property>>
     ~ EditableSVGObject(svgObject : SVGObject)
-    '+ IsTrimmed : bool
-    '+ Trim() : void
     + Dispose() : void
 }
 
