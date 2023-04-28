@@ -28,7 +28,6 @@ class DecomposeEditorViewModel
     + CurrentDocument : SvgDocument <<observable property>>
     + EditingSVGContainer : EditableSVGContainer <<observable property>>
     + SelectedSVGObject : EditableSVGObject <<observable property>>
-    + LayeredObjects : object <<observable property>>
     + OutputPurposeType : OutputPurpose <<observable property>>
     + OutputBaseDirname : string <<observable property>>
     + SetOutputPurposeCommand : ICommand
@@ -86,22 +85,25 @@ class SVGContainer
 
 class SVGLayer
 {
-    + LayerName : string <<read only>>
     + ID : string <<read only>>
+    + LayerName : string <<read only>>
+    + IsVisible : bool <<string>>
     + Objects : List<SVGObject> <<read only>>
     ~ SVGLayer(layer : SvgGroup, templeteDocument : SVGDocumentTemplete)
 }
 
 class SVGObject
 {
-    + SvgDoc : SvgDocument <<get only>>
+    + SvgDoc : SvgDocument <<read only>>
     + ID : string <<read only>>
-    + ElementName : string <<get only>>
-    + Bounds : RectangleF <<get only>>
+    + ObjectName : string <<read only>>
+    + IsVisible : bool <<read only>>
+    + IsPath : bool <<read only>>
+    + Bounds : RectangleF <<read only>>
     + SVGObject(element : SvgElement, layerTemplete : SVGLayerTemplete, docTemplete : SVGDocumentTemplete)
 }
 
-' factories for SVG document creation
+' Factories for SVG document creation
 class SVGDocumentTemplete
 {
     - templete : SvgDocument
