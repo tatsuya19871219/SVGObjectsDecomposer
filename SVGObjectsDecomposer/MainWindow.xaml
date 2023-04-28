@@ -14,11 +14,13 @@
     xmlns:brushes="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:custom="using:SVGObjectsDecomposer.Views"
     xmlns:writer="using:SVGObjectsDecomposer.OutputWriters"
+    xmlns:sys="using:System"
     mc:Ignorable="d">
 
     <Grid>
 
         <Grid.Resources>
+            <!--<converters:BoolNegationConverter x:Key="InvertedBoolConverter"/>-->
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <converters:BoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible"/>
         </Grid.Resources>
@@ -93,11 +95,14 @@
                         </GroupStyle.ContainerStyle>-->
                         
                         <GroupStyle.HeaderTemplate>
-                            <DataTemplate>
+                            <DataTemplate x:DataType="models:EditableSVGLayer">
+
                                 <StackPanel x:Name="LayerHeader" Orientation="Horizontal" Spacing="30"
                                             VerticalAlignment="Center">                                            
 
-                                    <TextBlock Text="{Binding LayerName}" HorizontalAlignment="Center"/>                                    
+                                    <TextBlock Text="{x:Bind LayerName}"/>
+
+                                    <TextBlock Text="(Invisible)" Visibility="{x:Bind local:BindingHelper.AsVisibleIfNot(IsVisible)}"/>
                                     
                                     <ToggleSwitch IsOn="{Binding PathExport, Mode=TwoWay}"
                                                     Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
