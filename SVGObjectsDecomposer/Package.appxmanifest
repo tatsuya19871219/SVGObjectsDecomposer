@@ -8,8 +8,8 @@
 
   <Identity
     Name="d3d928de-0366-478b-86ad-9011ad84057a"
-    Publisher="CN=tatsuya"
-    Version="1.0.0.0" />
+    Publisher="CN=Tatsuya Yamada"
+    Version="0.1.0.0" />
 
   <Properties>
     <DisplayName>SVGObjectsDecomposer</DisplayName>

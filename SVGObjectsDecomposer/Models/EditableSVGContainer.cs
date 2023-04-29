@@ -13,7 +13,7 @@ public partial class EditableSVGContainer : ObservableObject, IDisposable
     [ObservableProperty] string _filename;
     [ObservableProperty] SvgViewBox _viewBox;
 
-    public ObservableCollection<EditableSVGLayer> Layers {get; init;} = new();
+    public ObservableCollection<EditableSVGLayer> Layers { get; init; } = new();
 
     internal EditableSVGContainer(SVGContainer svgContainer)
     {
@@ -29,7 +29,7 @@ public partial class EditableSVGContainer : ObservableObject, IDisposable
         ViewBox = _svgContainer.ViewBox;
 
         foreach (var layer in _svgContainer.Layers)
-           Layers.Add(new EditableSVGLayer(layer));
+            Layers.Add(new EditableSVGLayer(layer));
 
     }
 
@@ -39,4 +39,4 @@ public partial class EditableSVGContainer : ObservableObject, IDisposable
         foreach (var layer in Layers) layer.Dispose();
         Layers.Clear();
     }
-
+}

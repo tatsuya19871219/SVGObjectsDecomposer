@@ -37,17 +37,27 @@ public class SVGObject
 
         IsPath = element is Svg.SvgPath ? true : false;
 
-        if ( element.TryGetAttribute("x", out var x) &&
-             element.TryGetAttribute("y", out var y) &&
-             element.TryGetAttribute("width", out var width) &&
-             element.TryGetAttribute("height", out var height) )
-        {
-            Bounds = new RectangleF(Single.Parse(x), Single.Parse(y), Single.Parse(width), Single.Parse(height));
-        }
-        else
-        {
-            Bounds = document.Bounds;
-        }
+        // if ( element.TryGetAttribute("x", out var x) &&
+        //      element.TryGetAttribute("y", out var y) &&
+        //      element.TryGetAttribute("width", out var width) &&
+        //      element.TryGetAttribute("height", out var height) )
+        // {
+        //     Bounds = new RectangleF(Single.Parse(x), Single.Parse(y), Single.Parse(width), Single.Parse(height));
+        //     // should consume the transform attribute
+        // }
+        // else
+        // {
+        //     Bounds = document.Bounds;
+        // }
 
+        var stroke = element.Stroke;
+        var strokeWidth = element.StrokeWidth;
+        var bounds = document.Bounds;
+
+        if (stroke == SvgPaintServer.None)
+        {
+            Bounds = new RectangleF(bounds.X + strokeWidth/2, bounds.Y + strokeWidth/2, bounds.Width - strokeWidth, bounds.Height - strokeWidth);
+        }
+        else Bounds = bounds;
     }
 }
