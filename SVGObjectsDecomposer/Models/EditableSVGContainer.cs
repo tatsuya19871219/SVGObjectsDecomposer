@@ -9,6 +9,8 @@ public partial class EditableSVGContainer : ObservableObject, IDisposable
 {
     readonly SVGContainer _svgContainer;
 
+    internal SvgDocument OriginalSVGDocument => _svgContainer.OriginalSVGDocument;
+
     [ObservableProperty] string _originalFilePath;
     [ObservableProperty] string _filename;
     [ObservableProperty] SvgViewBox _viewBox;

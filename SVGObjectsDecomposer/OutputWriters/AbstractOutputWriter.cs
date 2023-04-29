@@ -55,6 +55,12 @@ namespace SVGObjectsDecomposer.OutputWriters
             }
         }
 
+
+        protected void CopyOriginalSvgDoc()
+        {
+            _container.OriginalSVGDocument.Write($"{_outputBaseDirname}/original.svg");
+        }
+
         protected void WriteSvgDoc(string filename, string dirname, SvgDocument svgdoc)        
         {
             string outputDirname = $"{_outputBaseDirname}/{dirname}";

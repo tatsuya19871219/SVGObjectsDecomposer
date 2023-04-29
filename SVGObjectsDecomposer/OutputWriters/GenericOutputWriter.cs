@@ -22,6 +22,9 @@ namespace SVGObjectsDecomposer.OutputWriters
         {
             Prepare();
 
+            // Copy the original svg file
+            CopyOriginalSvgDoc();
+
             List<string> positionList = new();
             List<string> pathDataList = new();
 
@@ -39,54 +42,96 @@ namespace SVGObjectsDecomposer.OutputWriters
                 if (!shapeExport && !pathExport) continue;
 
                 foreach (var obj in layer.Objects)
-                {
-                    
-                    
+                {                                        
                     if(shapeExport)
                     {
-                        // perform trimming if requied (should be awaitable?)
-                        var partsSvgDoc = InkscapeProcessHelper.Trim(obj.SvgDoc);
-
-                        PointF partsCenter = new PointF(obj.Bounds.X + obj.Bounds.Width/2, obj.Bounds.Y + obj.Bounds.Height/2);
-
-                        var partsViewBox = partsSvgDoc.ViewBox;
-
-                        Debug.Assert(partsViewBox.MinX == 0 && partsViewBox.MinY == 0);
-
-                        RectangleF partsBounds = new RectangleF(partsCenter.X - partsViewBox.Width/2, partsCenter.Y - partsViewBox.Height/2, partsViewBox.Width, partsViewBox.Height);
-
                         string filename = obj.ObjectName.ToLower() + ".svg";
 
-                        WriteSvgDoc(filename, layerName, partsSvgDoc);
+                        ExportShape(obj, layerName, filename, out var partsBounds);
 
-                        positionList.Add(string.Format("{0}: {1}", filename, Formatter.BoundsFormat(obj.Bounds)));
+                        positionList.Add(string.Format("{0}: {1}", filename, Formatter.BoundsFormat(partsBounds)));
                     }
 
                     if(pathExport)
                     {
-                        var pathSvgDoc = obj.IsPath ? obj.SvgDoc 
-                                                    : InkscapeProcessHelper.ObjectToPath(obj.SvgDoc, obj.ID);
+                        ExtractPathData(obj, out var pathData);
 
-                        var pathObj = pathSvgDoc.Children[^1].Children;
-
-                        pathDataList.Add(obj.ObjectName.ToLower());
-
-                        foreach (SvgPath child in pathObj)
-                        {
-                            var pathString = child.PathData.ToString();
-
-                            pathDataList.Add(pathString);
-                        }
+                        pathDataList.AddRange(pathData);
                     }
 
                 }
             }
 
-            //
             WriteStringList("PositionList.txt", positionList);
-
             if(pathDataList.Count > 0) WriteStringList("PathDataList.txt", pathDataList);
             
+        }
+
+        #region Helper functions for generating output
+        void ExportShape(EditableSVGObject obj, string layerName, string filename, out RectangleF bounds)
+        {            
+            var partsSvgDoc = InkscapeProcessHelper.Trim(obj.SvgDoc);
+
+            PointF partsCenter = new PointF(obj.Bounds.X + obj.Bounds.Width/2, obj.Bounds.Y + obj.Bounds.Height/2);
+
+            var partsViewBox = partsSvgDoc.ViewBox;
+
+            Debug.Assert(partsViewBox.MinX == 0 && partsViewBox.MinY == 0);
+
+            bounds = new RectangleF(partsCenter.X - partsViewBox.Width/2, partsCenter.Y - partsViewBox.Height/2, partsViewBox.Width, partsViewBox.Height);
+
+            WriteSvgDoc(filename, layerName, partsSvgDoc);
+        }
+
+        void ExtractPathData(EditableSVGObject obj, out List<string> pathData)
+        {
+            pathData = new();
+
+            var pathSvgDoc = obj.IsPath ? obj.SvgDoc 
+                                        : InkscapeProcessHelper.ObjectToPath(obj.SvgDoc, obj.ID);
+
+            var objectToPathObjs = pathSvgDoc.Children[^1].Children;
+
+            List<SvgPath> pathObj = new();
+
+            foreach(var otpObj in objectToPathObjs)
+            {
+                if (otpObj is SvgPath otpPath) pathObj.Add(otpPath);
+                else if (otpObj is SvgGroup otpGroup) 
+                {
+                    List<SvgPath> flatten = new();
+                    FlattenPathGroup(otpGroup, ref flatten);
+                    pathObj.AddRange(flatten);
+                }
+                else throw new Exception("Unexpected SvgElement Type after ObjectToPath operation.");
+            }
+
+            pathData.Add(obj.ObjectName.ToLower());
+
+            foreach (SvgPath child in pathObj)
+            {
+                var pathString = child.PathData.ToString();
+
+                pathData.Add(pathString);
+            }
+        }
+        #endregion
+
+        // Helper function for nested path group
+        void FlattenPathGroup(SvgGroup group, ref List<SvgPath> flatten)
+        {
+            foreach (var item in group.Children)
+            {
+                if (item is SvgGroup)
+                {
+                    FlattenPathGroup(item as SvgGroup, ref flatten);
+                    continue;
+                }
+
+                Debug.Assert(item is SvgPath);
+
+                flatten.Add(item as SvgPath);
+            }
         }
 
     }

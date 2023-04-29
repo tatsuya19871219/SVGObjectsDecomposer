@@ -7,6 +7,7 @@ namespace SVGObjectsDecomposer;
 
 class SVGContainer
 {
+    readonly internal SvgDocument OriginalSVGDocument;
     readonly Uri _baseUri;
     readonly public string Filename;
     readonly public SvgViewBox ViewBox;
@@ -14,6 +15,8 @@ class SVGContainer
     
     internal SVGContainer(SvgDocument document)
     {
+        OriginalSVGDocument = document;
+
         _baseUri = document.BaseUri;
 
         //Filename = _baseUri.Segments.Last();
