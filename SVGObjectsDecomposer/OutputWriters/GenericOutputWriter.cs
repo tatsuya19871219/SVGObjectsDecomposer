@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -34,16 +36,28 @@ namespace SVGObjectsDecomposer.OutputWriters
                 bool shapeExport = layer.IsVisible;
                 bool pathExport = layer.PathExport;
 
+                if (!shapeExport && !pathExport) continue;
+
                 foreach (var obj in layer.Objects)
                 {
-                    string filename = obj.ObjectName.ToLower() + ".svg";
-
+                    
+                    
                     if(shapeExport)
                     {
                         // perform trimming if requied (should be awaitable?)
-                        var trimmedSvgDoc = InkscapeProcessHelper.Trim(obj.SvgDoc);
+                        var partsSvgDoc = InkscapeProcessHelper.Trim(obj.SvgDoc);
 
-                        WriteSvgDoc(filename, layerName, trimmedSvgDoc);
+                        PointF partsCenter = new PointF(obj.Bounds.X + obj.Bounds.Width/2, obj.Bounds.Y + obj.Bounds.Height/2);
+
+                        var partsViewBox = partsSvgDoc.ViewBox;
+
+                        Debug.Assert(partsViewBox.MinX == 0 && partsViewBox.MinY == 0);
+
+                        RectangleF partsBounds = new RectangleF(partsCenter.X - partsViewBox.Width/2, partsCenter.Y - partsViewBox.Height/2, partsViewBox.Width, partsViewBox.Height);
+
+                        string filename = obj.ObjectName.ToLower() + ".svg";
+
+                        WriteSvgDoc(filename, layerName, partsSvgDoc);
 
                         positionList.Add(string.Format("{0}: {1}", filename, Formatter.BoundsFormat(obj.Bounds)));
                     }
@@ -71,7 +85,7 @@ namespace SVGObjectsDecomposer.OutputWriters
             //
             WriteStringList("PositionList.txt", positionList);
 
-            WriteStringList("PathDataList.txt", pathDataList);
+            if(pathDataList.Count > 0) WriteStringList("PathDataList.txt", pathDataList);
             
         }
 
