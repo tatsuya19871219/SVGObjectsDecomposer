@@ -166,7 +166,7 @@
                     <Button Content="Open a SVG file" Click="OpenFileButton_Click"
                             IsEnabled="{x:Bind AppState.IsInitialized, Mode=OneWay}"/>
                     <Button Content="Save SVG parts" Click="SaveButton_Click"
-                            IsEnabled="{x:Bind AppState.IsSVGLoaded, Mode=OneWay}"/>
+                            IsEnabled="{x:Bind helper:BindingHelper.IfAll(AppState.IsSVGLoaded, AppState.CanUseInkscape), Mode=OneWay}"/>
                     <Button Content="Close the SVG file" Click="CloseFileButton_Click"
                             IsEnabled="{x:Bind AppState.IsSVGLoaded, Mode=OneWay}"/>
                 </StackPanel>
