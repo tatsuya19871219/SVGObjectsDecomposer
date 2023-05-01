@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using Svg;
+using System.Collections.Generic;
 
 namespace SVGObjectsDecomposer.Models;
 

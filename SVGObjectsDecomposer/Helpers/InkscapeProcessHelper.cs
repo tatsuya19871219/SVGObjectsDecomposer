@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Svg;
+using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Svg;
 
 namespace SVGObjectsDecomposer.Helpers;
 

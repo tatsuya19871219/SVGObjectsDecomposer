@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Svg;
 using SVGObjectsDecomposer.Models;
+using System;
+using System.Collections.Generic;
 
 namespace SVGObjectsDecomposer;
 

@@ -1,11 +1,9 @@
-﻿using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Svg;
 using SVGObjectsDecomposer.Models;
 using SVGObjectsDecomposer.OutputWriters;
-using System.Linq;
-using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace SVGObjectsDecomposer.ViewModels;
 

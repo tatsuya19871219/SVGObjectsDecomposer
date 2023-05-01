@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace SVGObjectsDecomposer.OutputWriters;
 
-namespace SVGObjectsDecomposer.OutputWriters
+public enum OutputPurpose
 {
-    public enum OutputPurpose
-    {
-        Generic,
-        Animation,
-        PositionTracking,
-        SimpleClickableShapes,
-        AnimatedClicableShapes
-    }
-
+    Generic,
+    Animation,
+    PositionTracking,
+    SimpleClickableShapes,
+    AnimatedClicableShapes
 }

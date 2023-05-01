@@ -1,5 +1,4 @@
 ﻿using Svg;
-using System;
 using System.Drawing;
 
 namespace SVGObjectsDecomposer.Models;
