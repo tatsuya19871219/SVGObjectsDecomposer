@@ -43,7 +43,7 @@ class OutputWriterFactory
         string originalFileBasename = GetOriginalFileBasename();
 
         // for test
-        string outputBaseDirname = $"{originalDirname}/output_{originalFileBasename}";
+        string outputBaseDirname = Path.Combine($"{originalDirname}", $"output_{originalFileBasename}");
 
         return outputBaseDirname;
     }

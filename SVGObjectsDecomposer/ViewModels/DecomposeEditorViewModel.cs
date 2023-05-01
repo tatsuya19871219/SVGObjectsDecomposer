@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Svg;
 using SVGObjectsDecomposer.Models;
 using SVGObjectsDecomposer.OutputWriters;
+using System.Diagnostics;
 using System.Windows.Input;
 
 namespace SVGObjectsDecomposer.ViewModels;
@@ -59,6 +60,10 @@ public partial class DecomposeEditorViewModel : ObservableObject
         IOutputWriter writer = _outputWriterFactory.Create(OutputBaseDirname, OutputPurposeType);
 
         // Todo: show message dialog to notify the output directory is already exist
+
+        // open output folder
+        var outputPath = @$"{ writer.OutputBaseDirname}";
+        Process.Start("explorer.exe", $"{outputPath}");
 
         writer.Execute();
     }

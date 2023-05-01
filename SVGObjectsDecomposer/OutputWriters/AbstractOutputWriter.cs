@@ -9,6 +9,7 @@ namespace SVGObjectsDecomposer.OutputWriters;
 
 abstract class AbstractOutputWriter : IOutputWriter
 {
+    public string OutputBaseDirname => _outputBaseDirname;
     readonly protected EditableSVGContainer _container;
     readonly protected string _outputBaseDirname;
 

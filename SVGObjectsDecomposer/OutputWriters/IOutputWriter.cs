@@ -2,5 +2,6 @@
 
 interface IOutputWriter
 {
+    string OutputBaseDirname {get;}
     void Execute();
 }
