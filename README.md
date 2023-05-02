@@ -34,6 +34,8 @@ e.g.,
 
 Group and nested layer are treated as a single object, respectively.
 
+Try to load the containing [sample images](./samples/) for testing the tool. 
+
 ## TODO
 
 - Improve UI (such as the progressbar in processing)
