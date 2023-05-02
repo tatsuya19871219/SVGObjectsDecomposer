@@ -36,6 +36,8 @@ Group and nested layer are treated as a single object, respectively.
 
 Try to load the containing [sample images](./samples/) for testing the tool. 
 
+Since the tool calls inkscape process several times during **save**, it takes longer as the given SVG file has much objects.   
+
 ## TODO
 
 - Improve UI (such as the progressbar in processing)
