@@ -42,3 +42,9 @@ Try to load the containing [sample images](./samples/) for testing the tool.
 - Generate XAML file for MAUI
 - Enable to customize the output 
 - In-tool preview
+
+## Dependent libralies
+
+- [SVG.NET](https://github.com/svg-net/SVG)
+- [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet)
+- [CommunityToolkit.WinUI](https://github.com/CommunityToolkit/WindowsCommunityToolkit)
