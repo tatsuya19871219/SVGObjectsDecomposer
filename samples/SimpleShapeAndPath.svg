@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="150mm"
+   height="100mm"
+   viewBox="0 0 150 100"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   sodipodi:docname="SimpleShapeAndPath.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.52221045"
+     inkscape:cx="836.82738"
+     inkscape:cy="511.28812"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="1917"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#de62ff;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+       id="rect234"
+       width="48"
+       height="48"
+       x="81"
+       y="26"
+       inkscape:label="shapeRect" />
+    <g
+       id="rect234-6"
+       inkscape:label="pathRectFill"
+       transform="translate(-20,-75)">
+      <path
+         style="color:#000000;fill:#de62ff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none"
+         d="m 41,101 h 48 v 48 H 41 Z"
+         id="path415" />
+    </g>
+    <path
+       style="color:#000000;fill:#000000;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none"
+       d="m 21,25 a 1.0001,1.0001 0 0 0 -1,1 v 48 a 1.0001,1.0001 0 0 0 1,1 h 48 a 1.0001,1.0001 0 0 0 1,-1 V 26 a 1.0001,1.0001 0 0 0 -1,-1 z m 1,2 H 68 V 73 H 22 Z"
+       id="path417"
+       inkscape:label="pathRectStroke" />
+  </g>
+</svg>

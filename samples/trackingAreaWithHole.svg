@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="150mm"
+   height="150mm"
+   viewBox="0 0 150 150"
+   version="1.1"
+   id="svg8901"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   sodipodi:docname="trackingAreaWithHole.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview8903"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.73851712"
+     inkscape:cx="259.98043"
+     inkscape:cy="345.28651"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="1917"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs8898" />
+  <g
+     inkscape:label="base"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:inline">
+    <rect
+       style="fill:#58f69e;fill-opacity:1;stroke-width:2;stroke-linejoin:bevel"
+       id="rect9023"
+       width="150"
+       height="150"
+       x="3.6670068e-07"
+       y="-7.5802791e-07"
+       ry="27.227983"
+       rx="27.227985"
+       inkscape:label="background" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="trackingAreas"
+     style="display:inline">
+    <path
+       id="rect16304"
+       style="display:inline;fill:#5865f6;stroke-width:2;stroke-linejoin:bevel"
+       d="M 21.081423,21.618818 H 128.91858 V 128.38119 H 21.081423 Z"
+       inkscape:label="RectAreaBounds" />
+    <path
+       id="path20464"
+       style="display:inline;fill:#58f69e;stroke-width:2;stroke-linejoin:bevel"
+       d="M 39.628751,81.294287 C 37.789355,64.496628 56.692729,40.944214 73.490388,39.104818 90.288047,37.265422 108.53185,51.908059 110.37125,68.705719 112.21064,85.503379 93.30727,109.05579 76.509611,110.89519 59.711951,112.73458 41.468147,98.091946 39.628751,81.294287 Z"
+       sodipodi:nodetypes="zzzzz"
+       inkscape:label="InsideHole" />
+  </g>
+</svg>
